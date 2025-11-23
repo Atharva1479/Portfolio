@@ -1,0 +1,70 @@
+import type { Metadata } from 'next';
+import { Inter, JetBrains_Mono } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({
+    subsets: ['latin'],
+    variable: '--font-inter',
+    display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+    subsets: ['latin'],
+    variable: '--font-jetbrains',
+    display: 'swap',
+});
+
+export const metadata: Metadata = {
+    metadataBase: new URL('https://yashpandav.dev'),
+    title: 'Yash Pandav | AI Engineer & Full Stack Developer',
+    description: 'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications. Building intelligent solutions with LangChain, Next.js, and modern AI technologies.',
+    keywords: ['AI Engineer', 'Full Stack Developer', 'Agentic AI', 'RAG Systems', 'LangChain', 'Next.js', 'React', 'TypeScript', 'Machine Learning', 'Web Development'],
+    authors: [{ name: 'Yash Pandav' }],
+    openGraph: {
+        title: 'Yash Pandav | AI Engineer & Full Stack Developer',
+        description: 'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications.',
+        url: 'https://yashpandav.dev',
+        siteName: 'Yash Pandav Portfolio',
+        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+        type: 'website',
+        locale: 'en_US',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Yash Pandav | AI Engineer & Full Stack Developer',
+        description: 'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications.',
+        images: ['/og-image.png'],
+        creator: '@YashPandav22959',
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+    verification: {
+        google: 'your-google-verification-code',
+    },
+};
+
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <html lang="en" className="scroll-smooth">
+            <head>
+                <link rel="icon" href="/favicon.png" type="image/png" />
+            </head>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+                {children}
+            </body>
+        </html>
+    );
+}
