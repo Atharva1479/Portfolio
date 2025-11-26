@@ -10,6 +10,7 @@ import Skills from '@/components/Skills';
 import { Preloader } from '@/components/Preloader';
 import { RevealOnScroll } from '@/components/RevealOnScroll';
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Lazy‑load heavy components
 const Projects = dynamic(() => import('@/components/Projects'), {
@@ -91,6 +92,7 @@ export default function Home() {
             {/* Custom cursor – client‑only */}
             <CustomCursor />
             <Analytics />
+            <SpeedInsights />
 
             {isLoading ? (
                 <Preloader onComplete={() => setIsLoading(false)} />
