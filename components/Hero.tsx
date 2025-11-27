@@ -59,7 +59,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChat }) => {
               </a>
 
               <a
-                href='https://drive.google.com/file/d/1LiJPlb8OvMAimUihFTTWkbmjFwySdy4u/view?usp=sharing'
+                href={PERSONAL_INFO.resume}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 border border-zinc-800 text-zinc-300 rounded-lg text-sm font-medium hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-all flex items-center gap-2 backdrop-blur-sm bg-black/30"

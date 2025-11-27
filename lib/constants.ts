@@ -1,12 +1,12 @@
 
 import { Project, SkillCategory, Achievement, SocialLink, Testimonial } from './types';
-
 export const PERSONAL_INFO = {
   name: "Yash Pandav",
   role: "AI Engineer",
   roleSecondary: "Full Stack Developer",
   location: "Surat, Gujarat, India",
   email: "contact@yashpandav.dev",
+  resume: "https://drive.google.com/file/d/1LiJPlb8OvMAimUihFTTWkbmjFwySdy4u/view?usp=sharing",
   terminalIntro: {
     cmd: "> npm run dev",
     response: "Initializing Project... Setup complete. Specializing in scalable full-stack architecture and AI integration.",
@@ -51,13 +51,13 @@ export const SKILLS: SkillCategory[] = [
   },
   {
     name: "Data Persistence & State",
-    skills: ["MongoDB", "PostgreSQL", "Supabase", "Firebase", "Vector Databases", "Neo4j", "SQL"],
+    skills: ["MongoDB", "PostgreSQL", "Supabase", "Firebase", "Vector Databases", "Neo4j"],
     icon: "Database"
   },
   {
     name: "System Ops & Ecosystem",
     skills: [
-      "AWS (EC2, S3, Lambda)", "Nginx", "Linux", "Git", "GitHub", "Java", "C", "Python", "DSA (Problem Solving)"
+      "AWS (EC2, S3, Lambda)", "Nginx", "Linux", "Git", "GitHub", "Java", "C", "Python"
     ],
     icon: "Cloud"
   }
@@ -202,7 +202,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "Project Maintainer",
     company: "React Blog (SWOC/IWOC)",
     image: "/Oken.png",
-    text: "I want to highlight Yash, one of the key contributors to my React Blog open-source project. Yash made more than 40+ meaningful contributions, ranging from adding significant features to improving existing functionality and addressing important issues. Throughout the process, he was hig hly professional, reliable, and always easy to communicate with. His dedication and technical expertise played a major role in the growth of the project. Yash is an excellent developer with a strong sense of collaboration, and I'm confident he will continue to grow and achieve even greater milestones in his career.",
+    text: "I want to highlight Yash, one of the key contributors to my React Blog open-source project. Yash made more than 40+ meaningful contributions, ranging from adding significant features to improving existing functionality and addressing important issues. Throughout the process, he was highly professional, reliable, and always easy to communicate with. His dedication and technical expertise played a major role in the growth of the project. Yash is an excellent developer with a strong sense of collaboration, and I'm confident he will continue to grow and achieve even greater milestones in his career.",
     linkedin: "https://www.linkedin.com/in/okenk/"
   }
 ];
