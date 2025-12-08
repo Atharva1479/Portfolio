@@ -7,7 +7,6 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Skills from '@/components/Skills';
-import { Preloader } from '@/components/Preloader';
 import { RevealOnScroll } from '@/components/RevealOnScroll';
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -79,13 +78,7 @@ const Starfield = () => {
 };
 
 export default function Home() {
-    const [isLoading, setIsLoading] = useState(true);
     const [isChatOpen, setIsChatOpen] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 3000);
-        return () => clearTimeout(timer);
-    }, []);
 
     return (
         <div className="relative min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden">
@@ -94,25 +87,19 @@ export default function Home() {
             <Analytics />
             <SpeedInsights />
 
-            {isLoading ? (
-                <Preloader onComplete={() => setIsLoading(false)} />
-            ) : (
-                <>
-                    <Starfield />
-                    <div className="relative z-10 animate-[fadeIn_1s_ease-out_forwards] overflow-x-hidden">
-                        <Navbar />
-                        <main className="space-y-0">
-                            <Hero onOpenChat={() => setIsChatOpen(true)} />
-                            <RevealOnScroll variant="blur-in"><About /></RevealOnScroll>
-                            <RevealOnScroll variant="slide-right"><Skills /></RevealOnScroll>
-                            <RevealOnScroll variant="blur-in"><Projects /></RevealOnScroll>
-                            <RevealOnScroll variant="slide-left"><Achievements /></RevealOnScroll>
-                        </main>
-                        <RevealOnScroll variant="scale-up"><Contact /></RevealOnScroll>
-                        <ChatWidget isOpen={isChatOpen} onToggle={() => setIsChatOpen(!isChatOpen)} />
-                    </div>
-                </>
-            )}
+            <Starfield />
+            <div className="relative z-10 animate-[fadeIn_1s_ease-out_forwards] overflow-x-hidden">
+                <Navbar />
+                <main className="space-y-0">
+                    <Hero onOpenChat={() => setIsChatOpen(true)} />
+                    <RevealOnScroll variant="blur-in"><About /></RevealOnScroll>
+                    <RevealOnScroll variant="slide-right"><Skills /></RevealOnScroll>
+                    <RevealOnScroll variant="blur-in"><Projects /></RevealOnScroll>
+                    <RevealOnScroll variant="slide-left"><Achievements /></RevealOnScroll>
+                </main>
+                <RevealOnScroll variant="scale-up"><Contact /></RevealOnScroll>
+                <ChatWidget isOpen={isChatOpen} onToggle={() => setIsChatOpen(!isChatOpen)} />
+            </div>
         </div>
     );
 }

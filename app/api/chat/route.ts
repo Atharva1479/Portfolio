@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
         `;
 
         const guardrailResponse = await ai.models.generateContent({
-            model: 'gemini-2.0-flash',
+            model: 'gemini-2.5-flash-lite',
             contents: [{ role: 'user', parts: [{ text: guardrailPrompt }] }]
         });
 
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
         let chat = chatSessions.get(sessionId);
         if (!chat) {
             chat = ai.chats.create({
-                model: 'gemini-2.0-flash',
+                model: 'gemini-2.5-flash-lite',
                 config: {
                     systemInstruction: SYSTEM_PROMPT,
                 },
