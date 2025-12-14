@@ -131,8 +131,18 @@ export async function POST(request: NextRequest) {
             sessionId
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Chat API Error:', error);
+
+        if (error.status === 429 || error?.toString().includes('429') || error?.message?.includes('quota')) {
+            return NextResponse.json(
+                {
+                    error: "AI is busy. Please wait a minute and try again."
+                },
+                { status: 429 }
+            );
+        }
+
         return NextResponse.json(
             { error: 'Failed to process chat message. Please try again.' },
             { status: 500 }
