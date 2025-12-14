@@ -62,7 +62,8 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
       });
 
       if (!response.ok) {
-        throw new Error('API request failed');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'API request failed');
       }
 
       const data = await response.json();
@@ -71,11 +72,11 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
         text: data.response || "I couldn't generate a response."
       }]);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chat Error:', error);
       setMessages(prev => [...prev, {
         role: 'model',
-        text: 'Error: Unable to connect to the AI service. Please try again later.'
+        text: error.message || 'Error: Unable to connect to the AI service. Please try again later.'
       }]);
     } finally {
       setIsLoading(false);
