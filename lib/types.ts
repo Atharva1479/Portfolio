@@ -46,3 +46,27 @@ export interface Education {
   location?: string;
   grades?: string;
 }
+
+export interface GitaQuote {
+  text: string;
+  chapter: number;
+  verse: number;
+}
+
+export interface Experience {
+  company: string;
+  role: string;
+  duration: string;
+  location: string;
+  type: 'Full-time' | 'Part-time' | 'Internship' | 'Freelance' | 'Contract';
+  description: string[];
+  tech?: string[];
+  logo?: string;
+  current?: boolean;
+  links?: {
+    website?: string;
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+  };
+}

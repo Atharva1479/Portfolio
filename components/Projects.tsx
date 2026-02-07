@@ -23,7 +23,7 @@ const Projects: React.FC = () => {
               Architected for scalability, performance, and intelligent automation.
             </p>
           </div>
-          <a href="https://github.com/yashpandav?tab=repositories" target="_blank" rel="noreferrer" className="hidden md:flex font-mono text-xs text-zinc-400 hover:text-white items-center gap-2 transition-colors border border-zinc-800 px-4 py-2 rounded-full bg-zinc-900/50 hover:bg-zinc-800 hover:border-zinc-600 group">
+          <a href="https://github.com/Atharva1479?tab=repositories" target="_blank" rel="noreferrer" className="hidden md:flex font-mono text-xs text-zinc-400 hover:text-white items-center gap-2 transition-colors border border-zinc-800 px-4 py-2 rounded-full bg-zinc-900/50 hover:bg-zinc-800 hover:border-zinc-600 group">
             <Github className="h-3 w-3 group-hover:text-emerald-500 transition-colors" /> view_all_repositories
           </a>
         </div>
@@ -38,7 +38,7 @@ const Projects: React.FC = () => {
         </div>
 
         <div className="md:hidden mt-12 text-center">
-          <a href="https://github.com/yashpandav?tab=repositories" target="_blank" rel="noreferrer" className="inline-flex font-mono text-xs text-zinc-400 hover:text-white items-center gap-2 transition-colors border border-zinc-800 px-6 py-3 rounded-full bg-zinc-900/50 hover:bg-zinc-800 hover:border-zinc-600 group">
+          <a href="https://github.com/Atharva1479?tab=repositories" target="_blank" rel="noreferrer" className="inline-flex font-mono text-xs text-zinc-400 hover:text-white items-center gap-2 transition-colors border border-zinc-800 px-6 py-3 rounded-full bg-zinc-900/50 hover:bg-zinc-800 hover:border-zinc-600 group">
             <Github className="h-3 w-3 group-hover:text-emerald-500 transition-colors" /> View All Repositories
           </a>
         </div>

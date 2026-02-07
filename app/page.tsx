@@ -15,6 +15,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 const Projects = dynamic(() => import('@/components/Projects'), {
     loading: () => <div className="min-h-screen" />,
 });
+const Education = dynamic(() => import('@/components/Education'), {
+    loading: () => <div className="min-h-[300px]" />,
+});
+const Experience = dynamic(() => import('@/components/Experience'), {
+    loading: () => <div className="min-h-[300px]" />,
+});
 const Achievements = dynamic(() => import('@/components/Achievements'), {
     loading: () => <div className="min-h-screen" />,
 });
@@ -93,7 +99,9 @@ export default function Home() {
                 <main className="space-y-0">
                     <Hero onOpenChat={() => setIsChatOpen(true)} />
                     <RevealOnScroll variant="blur-in"><About /></RevealOnScroll>
+                    <RevealOnScroll variant="slide-left"><Experience /></RevealOnScroll>
                     <RevealOnScroll variant="slide-right"><Skills /></RevealOnScroll>
+                    {/* <RevealOnScroll variant="blur-in"><Education /></RevealOnScroll> */}
                     <RevealOnScroll variant="blur-in"><Projects /></RevealOnScroll>
                     <RevealOnScroll variant="slide-left"><Achievements /></RevealOnScroll>
                 </main>

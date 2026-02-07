@@ -1,10 +1,10 @@
 import { GoogleGenAI } from '@google/genai';
 import { NextRequest, NextResponse } from 'next/server';
-import { PERSONAL_INFO, SKILLS, PROJECTS, ACHIEVEMENTS, ABOUT, TESTIMONIALS, SOCIALS, EDUCATION } from '@/lib/constants';
+import { PERSONAL_INFO, SKILLS, PROJECTS, ACHIEVEMENTS, ABOUT, TESTIMONIALS, SOCIALS, EDUCATION, EXPERIENCE } from '@/lib/constants';
 
 // Construct the system prompt from portfolio data
 const SYSTEM_PROMPT = `
-You are the **Portfolio Assistant for Yash Pandav**, an AI Engineer and Full Stack Developer.
+You are the **Portfolio Assistant for Atharva Jamdar**, an Full Stack Developer and Gen AI developer.
 Your goal is to represent Yash professionally to recruiters, engineers, and potential collaborators.
 
 ### 1. CORE BEHAVIOR & TONE
@@ -44,6 +44,13 @@ ${PROJECTS.map(p => `  ${p.title} (${p.date})
     Tech: ${p.tech.join(', ')}
     Links: Demo(${p.links?.demo || 'N/A'}), Code(${p.links?.code || 'N/A'})`).join('\n')}
 
+Work Experience
+${EXPERIENCE.map(e => `  ${e.role} at ${e.company} (${e.duration})
+    Location: ${e.location}
+    Type: ${e.type}${e.current ? ' (Currently Working)' : ''}
+    Responsibilities: ${e.description.join(' ')}
+    Technologies: ${e.tech?.join(', ') || 'N/A'}`).join('\n')}
+
 Achievements
 ${ACHIEVEMENTS.map(a => `  ${a.title}: ${a.description}`).join('\n')}
 
@@ -78,11 +85,11 @@ export async function POST(request: NextRequest) {
         }
 
         const guardrailPrompt = `
-        You are a strict Guardrail Agent for Yash Pandav's portfolio website.
+        You are a strict Guardrail Agent for Atharva Jamdar's portfolio website.
         Your task is to analyze the User's Message and determine if it is relevant.
 
         **Allowed Topics:**
-        1. Yash Pandav (his skills, projects, experience, resume, contact info, etc.)
+        1. Atharva Jamdar (his skills, projects, experience, resume, contact info, etc.)
         2. Software Engineering, AI, Web Development, Tech Stack, Coding.
         3. Professional greetings (Hi, Hello, Good morning).
 
@@ -93,7 +100,7 @@ export async function POST(request: NextRequest) {
 
         **Instructions:**
         - If the message is ALLOWED, output exactly: "ALLOWED"
-        - If the message is FORBIDDEN, output a polite, professional refusal message. Example: "I am an AI assistant dedicated to Yash's portfolio. I can only answer questions related to his professional work, skills, and projects."
+        - If the message is FORBIDDEN, output a polite, professional refusal message. Example: "I am an AI assistant dedicated to Atharva's portfolio. I can only answer questions related to his professional work, skills, and projects."
 
         User Message: "${message}"
         `;

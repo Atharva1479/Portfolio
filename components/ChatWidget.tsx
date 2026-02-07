@@ -16,7 +16,7 @@ interface ChatWidgetProps {
 
 const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: "Hello! I'm Yash's AI Assistant. Ask me anything about his projects, skills, or experience." }
+    { role: 'model', text: "Hello! I'm Atharva's AI Assistant. Ask me anything about his projects, skills, or experience." }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
