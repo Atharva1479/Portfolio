@@ -116,16 +116,11 @@ const VisitorCounter: React.FC = () => {
   useEffect(() => {
     const fetchVisitorCount = async () => {
       try {
-        // Using CountAPI - a free visitor counter service
-        const response = await fetch('https://api.countapi.xyz/hit/atharva-portfolio/visits');
+        const response = await fetch('/api/visitor');
         const data = await response.json();
-        setVisitorCount(data.value);
-      } catch (error) {
-        // Fallback to localStorage-based counter if API fails
-        const storedCount = localStorage.getItem('visitorCount');
-        const count = storedCount ? parseInt(storedCount) + 1 : 1;
-        localStorage.setItem('visitorCount', count.toString());
-        setVisitorCount(count);
+        setVisitorCount(data.count);
+      } catch {
+        setVisitorCount(0);
       } finally {
         setLoading(false);
       }
