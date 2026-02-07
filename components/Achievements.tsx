@@ -23,23 +23,23 @@ const Achievements: React.FC = () => {
       <section id="achievements" className="py-16 md:py-20 relative z-10">
          <div className="max-w-6xl mx-auto px-6">
 
-            {/* Section Header */}
+            {/* Section Header - COMMENTED OUT
             <div className="flex items-center gap-3 mb-12">
                <div className="h-px w-8 bg-emerald-500"></div>
                <span className="text-emerald-500 font-mono text-sm uppercase tracking-wider">
                   Impact & Recognition
                </span>
             </div>
+            */}
 
             {/* Layout Change: Stacked Sections instead of Split Columns */}
             <div className="flex flex-col gap-16">
 
-               {/* 1. Testimonials Carousel (Text Only) */}
+               {/* 1. Testimonials Carousel - COMMENTED OUT
                <div className="relative w-full max-w-6xl mx-auto">
                   <RevealOnScroll variant="blur-in">
                      <div className="relative min-h-[350px] group flex flex-col justify-center">
 
-                        {/* Slides Container - Grid Stack for Fade Effect */}
                         <div className="grid grid-cols-1 relative min-h-[300px]">
                            {TESTIMONIALS.map((testimonial, index) => (
                               <div
@@ -99,7 +99,6 @@ const Achievements: React.FC = () => {
                            ))}
                         </div>
 
-                        {/* Controls - Simplified */}
                         <button
                            onClick={prevTestimonial}
                            className="absolute left-0 top-1/2 -translate-y-1/2 p-2 text-zinc-600 hover:text-emerald-500 transition-colors z-20 hidden md:block"
@@ -115,7 +114,6 @@ const Achievements: React.FC = () => {
                            <ChevronRight className="h-8 w-8" />
                         </button>
 
-                        {/* Indicators */}
                         <div className="flex justify-center gap-2 mt-8">
                            {TESTIMONIALS.map((_, idx) => (
                               <button
@@ -129,12 +127,13 @@ const Achievements: React.FC = () => {
                      </div>
                   </RevealOnScroll>
                </div>
+               */}
 
                {/* 2. Performance Metrics (Grid of 4) */}
                <div>
-                  <div className="flex items-center gap-4 mb-6">
-                     <h3 className="text-sm font-mono text-zinc-500 uppercase tracking-wider">Performance Metrics</h3>
-                     <div className="h-px flex-grow bg-zinc-900"></div>
+                  <div className="flex items-center gap-3 mb-6">
+                     <div className="h-px w-8 bg-emerald-500"></div>
+                     <h3 className="text-sm font-mono text-emerald-500 uppercase tracking-wider">Recognition</h3>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

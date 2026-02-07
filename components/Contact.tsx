@@ -1,7 +1,21 @@
-import React from 'react';
-import { SOCIALS, PERSONAL_INFO } from '../lib/constants';
-import { Mail, Globe } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { SOCIALS, PERSONAL_INFO, GITA_QUOTES } from '../lib/constants';
+import { Mail, Globe, BookOpen, Users } from 'lucide-react';
 import { RevealOnScroll } from './RevealOnScroll';
+
+// Get daily quote based on current date
+const getDailyQuote = () => {
+  const today = new Date();
+  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+  return GITA_QUOTES[dayOfYear % GITA_QUOTES.length];
+};
+
+// Get ordinal suffix for numbers (1st, 2nd, 3rd, etc.)
+const getOrdinalSuffix = (n: number): string => {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
 const SocialData: Record<string, { icon: React.FC<any>; colorClass: string }> = {
   GitHub: {
     icon: (props) => (
@@ -94,6 +108,50 @@ const SocialData: Record<string, { icon: React.FC<any>; colorClass: string }> = 
   },
 };
 
+// Visitor Counter Component
+const VisitorCounter: React.FC = () => {
+  const [visitorCount, setVisitorCount] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVisitorCount = async () => {
+      try {
+        // Using CountAPI - a free visitor counter service
+        const response = await fetch('https://api.countapi.xyz/hit/atharva-portfolio/visits');
+        const data = await response.json();
+        setVisitorCount(data.value);
+      } catch (error) {
+        // Fallback to localStorage-based counter if API fails
+        const storedCount = localStorage.getItem('visitorCount');
+        const count = storedCount ? parseInt(storedCount) + 1 : 1;
+        localStorage.setItem('visitorCount', count.toString());
+        setVisitorCount(count);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVisitorCount();
+  }, []);
+
+  return (
+    <RevealOnScroll variant="blur-in">
+      <div className="mb-12 text-center">
+        <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900 hover:border-zinc-600 transition-all duration-300">
+          <Users className="h-4 w-4 text-emerald-500" />
+          {loading ? (
+            <span className="text-sm text-zinc-400 font-mono">Loading...</span>
+          ) : (
+            <span className="text-sm text-zinc-300 font-mono">
+              You are the <span className="text-emerald-400 font-semibold">{getOrdinalSuffix(visitorCount || 1)}</span> visitor
+            </span>
+          )}
+        </div>
+      </div>
+    </RevealOnScroll>
+  );
+};
+
 export const Contact: React.FC = () => {
   return (
     <footer id="contact" className="relative bg-zinc-950 pt-16 pb-8 md:pt-20 md:pb-12 overflow-hidden z-10">
@@ -131,7 +189,7 @@ export const Contact: React.FC = () => {
             <div className="h-px flex-grow bg-zinc-800"></div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {SOCIALS.filter(s => s.name !== 'Email').map((social, index) => {
               const data = SocialData[social.name] || { icon: Globe, colorClass: "group-hover:text-white" };
               const Icon = data.icon;
@@ -142,7 +200,7 @@ export const Contact: React.FC = () => {
                     href={social.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex flex-col items-center justify-center gap-3 p-4 rounded-xl border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900 hover:border-zinc-600 transition-all duration-300"
+                    className="group flex flex-col items-center justify-center gap-3 p-4 rounded-xl border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900 hover:border-zinc-600 transition-all duration-300 w-28 sm:w-32"
                   >
                     <div className={`p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-400 ${data.colorClass} group-hover:scale-110 transition-all duration-300`}>
                       <Icon className="h-5 w-5" />
@@ -157,13 +215,44 @@ export const Contact: React.FC = () => {
           </div>
         </div>
 
+        {/* Daily Bhagavad Gita Quote */}
+        <div className="mb-12">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-px flex-grow bg-zinc-800"></div>
+            <span className="text-zinc-500 font-mono text-sm uppercase tracking-wider">Daily Wisdom</span>
+            <div className="h-px flex-grow bg-zinc-800"></div>
+          </div>
+
+          {(() => {
+            const quote = getDailyQuote();
+            return (
+              <RevealOnScroll variant="blur-in">
+                <div className="relative max-w-2xl mx-auto p-6 md:p-8 rounded-xl border border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900 hover:border-zinc-600 transition-all duration-300">
+                  <BookOpen className="absolute top-4 right-4 h-5 w-5 text-emerald-500/30" />
+                  <blockquote className="text-center">
+                    <p className="text-lg md:text-xl text-zinc-200 italic leading-relaxed font-serif">
+                      "{quote.text}"
+                    </p>
+                    <footer className="mt-5 text-sm text-emerald-500/70 font-mono">
+                      — Bhagavad Gita, Chapter {quote.chapter}, Verse {quote.verse}
+                    </footer>
+                  </blockquote>
+                </div>
+              </RevealOnScroll>
+            );
+          })()}
+        </div>
+
+        {/* Visitor Counter */}
+        <VisitorCounter />
+
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-zinc-900/50">
           <div className="flex items-center gap-2 text-emerald-500 bg-emerald-500/5 px-3 py-1 rounded-full border border-emerald-500/10">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             <span className="font-mono text-[10px] font-semibold tracking-wide uppercase">Open to Work</span>
           </div>
           <p className="font-mono text-xs text-zinc-600">
-            © 2025 Yash Pandav. All rights reserved.
+            © 2026 Atharva Jamdar. All rights reserved.
           </p>
         </div>
 

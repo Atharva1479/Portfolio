@@ -16,8 +16,10 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { name: '~/home', href: '#home' },
     { name: '~/about', href: '#about' },
+    { name: '~/experience', href: '#experience' },
     { name: '~/stack', href: '#skills' },
-    { name: '~/work', href: '#projects' },
+    { name: '~/education', href: '#education' },
+    { name: '~/projects', href: '#projects' },
     { name: '~/recognition', href: '#achievements' },
     { name: '~/contact', href: '#contact' },
   ];
@@ -32,7 +34,7 @@ const Navbar: React.FC = () => {
             <Terminal className="h-4 w-4 text-zinc-400 group-hover:text-white transition-colors duration-300" />
           </div>
           <span className="font-mono font-semibold text-sm tracking-tight text-zinc-200 group-hover:text-white transition-colors duration-300">
-            yash_pandav<span className="animate-cursor-blink text-emerald-500">_</span>
+            atharva_jamdar<span className="animate-cursor-blink text-emerald-500">_</span>
           </span>
         </div>
 

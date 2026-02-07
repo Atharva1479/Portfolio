@@ -1,4 +1,4 @@
-# Yash Pandav | AI Engineer & Full Stack Developer Portfolio
+# Atharva Jamdar | AI Engineer & Full Stack Developer Portfolio
 
 A high-performance, interactive personal portfolio website built with **Next.js 15 (App Router)**, **TypeScript**, and **Tailwind CSS**. This project showcases my skills, projects, and experience as an AI Engineer and Full Stack Developer, featuring a secure, custom-built **AI Chat Agent** powered by Google Gemini.
 
@@ -35,7 +35,7 @@ Follow these steps to run the project locally.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yashpandav/Portfolio.git
+git clone https://github.com/Atharva1479/Portfolio.git
 cd Portfolio
 ```
 
@@ -84,14 +84,3 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 ├── public/               # Static assets (images, favicon)
 └── ...
 ```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📬 Contact
-
--   **Website**: [https://www.yashpandav.dev/](https://www.yashpandav.dev/)
--   **Email**: [contact@yashpandav.dev](mailto:contact@yashpandav.dev)
--   **LinkedIn**: [Yash Pandav](https://www.linkedin.com/in/yash-pandav/)
--   **GitHub**: [@yashpandav](https://github.com/yashpandav)
