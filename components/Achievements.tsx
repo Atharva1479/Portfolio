@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { ACHIEVEMENTS, TESTIMONIALS } from '../lib/constants';
-import { Trophy, BarChart3, Zap, Award, Quote, Linkedin, ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { ACHIEVEMENTS } from '../lib/constants';
+import { Trophy, BarChart3, Zap, Award } from 'lucide-react';
 import { RevealOnScroll } from './RevealOnScroll';
 
+// Testimonials imports & state commented out:
+// import { useState, useEffect } from 'react';
+// import { TESTIMONIALS } from '../lib/constants';
+// import { Quote, Linkedin, ChevronLeft, ChevronRight } from 'lucide-react';
+
 const Achievements: React.FC = () => {
-   const [currentIndex, setCurrentIndex] = useState(0);
-
-   const nextTestimonial = () => {
-      setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-   };
-
-   const prevTestimonial = () => {
-      setCurrentIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-   };
-
-   useEffect(() => {
-      const timer = setInterval(nextTestimonial, 8000);
-      return () => clearInterval(timer);
-   }, []);
+   // Testimonials state - COMMENTED OUT
+   // const [currentIndex, setCurrentIndex] = useState(0);
+   // const nextTestimonial = () => setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+   // const prevTestimonial = () => setCurrentIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+   // useEffect(() => { const timer = setInterval(nextTestimonial, 8000); return () => clearInterval(timer); }, []);
 
    return (
       <section id="achievements" className="py-16 md:py-20 relative z-10">

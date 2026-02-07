@@ -15,9 +15,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 const Projects = dynamic(() => import('@/components/Projects'), {
     loading: () => <div className="min-h-screen" />,
 });
-const Education = dynamic(() => import('@/components/Education'), {
-    loading: () => <div className="min-h-[300px]" />,
-});
+// const Education = dynamic(() => import('@/components/Education'), {
+//     loading: () => <div className="min-h-[300px]" />,
+// });
 const Experience = dynamic(() => import('@/components/Experience'), {
     loading: () => <div className="min-h-[300px]" />,
 });
