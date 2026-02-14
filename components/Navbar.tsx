@@ -9,10 +9,17 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenCommand }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMac, setIsMac] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
+      const scrollHeight = document.documentElement.scrollHeight;
+      const innerHeight = window.innerHeight;
+      const progress = scrollHeight > innerHeight
+        ? (window.scrollY / (scrollHeight - innerHeight)) * 100
+        : 0;
+      setScrollProgress(Math.min(100, progress));
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -85,7 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenCommand }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute w-full left-0 top-full bg-black/95 backdrop-blur-xl border-b border-zinc-800 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        className={`md:hidden absolute w-full left-0 top-full bg-black border-b border-zinc-800 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isOpen ? 'max-h-[calc(100vh-4rem)] opacity-100' : 'max-h-0 opacity-0'
           }`}
       >
         <div className="px-4 py-6 space-y-3">
@@ -103,6 +110,12 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenCommand }) => {
           ))}
         </div>
       </div>
+
+      {/* Scroll Progress Bar */}
+      <div
+        className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-600 transition-[width] duration-150 ease-out"
+        style={{ width: `${scrollProgress}%` }}
+      />
     </nav>
   );
 };

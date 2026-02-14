@@ -1,16 +1,44 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Download, Check } from 'lucide-react';
 import { PERSONAL_INFO } from '../lib/constants';
 import { Terminal, TypingAnimation, AnimatedSpan } from './Terminal';
+import TextScramble from './TextScramble';
 
 interface HeroProps {
   onOpenChat?: () => void;
 }
 
 const Hero: React.FC<HeroProps> = ({ onOpenChat }) => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    if (!isDesktop) return;
+
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section id="home" className="relative pt-24 pb-16 md:pt-32 md:pb-20 min-h-screen flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808018_1px,transparent_1px),linear-gradient(to_bottom,#80808018_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)]"></div>
+      <div
+        className="absolute inset-0 bg-[linear-gradient(to_right,#80808018_1px,transparent_1px),linear-gradient(to_bottom,#80808018_1px,transparent_1px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_80%,transparent_100%)]"
+        style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+      ></div>
+
+      {/* Gradient Blobs — desktop only to avoid mobile overflow/bleed */}
+      <div
+        className="hidden md:block absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+      >
+        <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-emerald-500/15 blur-3xl animate-blob-drift-1" />
+        <div className="absolute -top-10 -right-20 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl animate-blob-drift-2" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl animate-blob-drift-3" />
+      </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
@@ -33,11 +61,11 @@ const Hero: React.FC<HeroProps> = ({ onOpenChat }) => {
               <div className="mt-4 pl-2 flex flex-col gap-2">
                 <div className="flex flex-col [@media(min-width:470px)]:flex-row [@media(min-width:470px)]:items-center gap-2 [@media(min-width:470px)]:gap-3 [@media(min-width:1022px)]:flex-col [@media(min-width:1022px)]:items-start [@media(min-width:1022px)]:gap-1 [@media(min-width:1134px)]:flex-row [@media(min-width:1134px)]:items-center [@media(min-width:1134px)]:gap-3">
                   <p className="text-2xl md:text-3xl font-medium text-zinc-500 whitespace-nowrap">
-                    {PERSONAL_INFO.role}
+                    <TextScramble text={PERSONAL_INFO.role} delay={600} speed={40} />
                   </p>
                   <span className="text-zinc-700 text-xl hidden [@media(min-width:470px)]:inline [@media(min-width:1022px)]:hidden [@media(min-width:1134px)]:inline">&</span>
                   <p className="text-2xl md:text-3xl font-medium text-zinc-500 whitespace-nowrap">
-                    {PERSONAL_INFO.roleSecondary}
+                    <TextScramble text={PERSONAL_INFO.roleSecondary} delay={900} speed={40} />
                   </p>
                 </div>
               </div>
