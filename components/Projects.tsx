@@ -1,5 +1,6 @@
+'use client';
 
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { PROJECTS } from '../lib/constants';
 import { Project } from '../types';
@@ -85,6 +86,44 @@ function getStatusConfig(status?: string) {
   }
 }
 
+// 3D Tilt Card wrapper
+const TiltCard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateY = ((x - centerX) / centerX) * 8;
+    const rotateX = ((centerY - y) / centerY) * 8;
+    el.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    el.style.transition = 'transform 0.05s ease-out';
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+    el.style.transition = 'transform 0.4s ease-out';
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+      className="h-full"
+    >
+      {children}
+    </div>
+  );
+};
+
 const Projects: React.FC = () => {
   return (
     <section id="projects" className="py-16 md:py-24 relative z-10">
@@ -111,7 +150,9 @@ const Projects: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {PROJECTS.map((project, index) => (
             <RevealOnScroll key={index} variant="fade-up" delay={index * 80}>
-              <ProjectCard project={project} />
+              <TiltCard>
+                <ProjectCard project={project} />
+              </TiltCard>
             </RevealOnScroll>
           ))}
         </div>
@@ -143,7 +184,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-48 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+            className="w-full h-40 sm:h-48 object-contain sm:object-cover bg-zinc-900 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
           />
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-zinc-950/80 to-transparent" />
         </div>

@@ -1,4 +1,4 @@
-import { Project, SkillCategory, Achievement, SocialLink, Testimonial, Education, GitaQuote, Experience } from './types';
+import { Project, SkillCategory, Achievement, SocialLink, Testimonial, Education, GitaQuote, Experience, Stat } from './types';
 
 export const PERSONAL_INFO = {
   name: "Atharva Jamdar",
@@ -371,6 +371,13 @@ export const PROJECTS: Project[] = [
       ]
     }
   }
+];
+
+export const STATS: Stat[] = [
+  { value: 5, suffix: '+', label: 'Projects Built' },
+  { value: 40, suffix: '+', label: 'Open Source Contributions' },
+  { value: 98, suffix: '%', label: 'Latency Reduction' },
+  { value: 50, suffix: '%', label: 'Onboarding Time Saved' },
 ];
 
 export const ACHIEVEMENTS: Achievement[] = [
