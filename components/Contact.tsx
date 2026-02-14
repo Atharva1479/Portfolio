@@ -147,6 +147,10 @@ const VisitorCounter: React.FC = () => {
   );
 };
 
+// Contact Form Component — uncomment when ready to use (needs Formspree ID)
+// import { Send, CheckCircle } from 'lucide-react';
+// const ContactForm: React.FC = () => { ... };
+
 export const Contact: React.FC = () => {
   return (
     <footer id="contact" className="relative bg-zinc-950 pt-16 pb-8 md:pt-20 md:pb-12 overflow-hidden z-10">
@@ -175,6 +179,18 @@ export const Contact: React.FC = () => {
             <span>Send Email</span>
           </a>
         </div>
+
+        {/* Contact Form — uncomment when ready
+        <RevealOnScroll variant="blur-in">
+          <div className="max-w-2xl mx-auto mb-20 p-6 md:p-8 rounded-xl border border-zinc-800 bg-zinc-900/20">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-px w-6 bg-emerald-500"></div>
+              <span className="text-emerald-500 font-mono text-xs uppercase tracking-wider">Send a Message</span>
+            </div>
+            <ContactForm />
+          </div>
+        </RevealOnScroll>
+        */}
 
         {/* Dedicated Social Links Section */}
         <div className="mb-20">

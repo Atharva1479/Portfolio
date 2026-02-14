@@ -184,7 +184,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-40 sm:h-48 object-contain sm:object-cover bg-zinc-900 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+            className="w-full h-40 sm:h-48 object-cover bg-zinc-900 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
           />
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-zinc-950/80 to-transparent" />
         </div>
