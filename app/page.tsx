@@ -1,13 +1,14 @@
 // This page is a client component
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Skills from '@/components/Skills';
 import { RevealOnScroll } from '@/components/RevealOnScroll';
+import Starfield from '@/components/Starfield';
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -29,59 +30,6 @@ const Contact = dynamic(() => import('@/components/Contact').then(m => ({ defaul
 });
 const ChatWidget = dynamic(() => import('@/components/ChatWidget'), { ssr: false });
 const CustomCursor = dynamic(() => import('@/components/CustomCursor').then(mod => mod.CustomCursor), { ssr: false });
-
-// Animated background component
-const Starfield = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let width = window.innerWidth;
-        let height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-
-        const stars = Array.from({ length: 100 }, () => ({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            size: Math.random() * 2,
-            speed: Math.random() * 0.5 + 0.1,
-        }));
-
-        const animate = () => {
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fill();
-                star.y -= star.speed;
-                if (star.y < 0) {
-                    star.y = height;
-                    star.x = Math.random() * width;
-                }
-            });
-            requestAnimationFrame(animate);
-        };
-
-        const handleResize = () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        };
-        window.addEventListener('resize', handleResize);
-        animate();
-
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none opacity-30" style={{ zIndex: 0 }} />;
-};
 
 export default function Home() {
     const [isChatOpen, setIsChatOpen] = useState(false);
