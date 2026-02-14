@@ -12,7 +12,12 @@ export const CustomCursor: React.FC = () => {
   const positionRef = useRef({ x: 0, y: 0 });
   const trailerPositionRef = useRef({ x: 0, y: 0 });
 
+  const magnetizedRef = useRef<Set<HTMLElement>>(new Set());
+
   useEffect(() => {
+    // Skip magnetic effect on touch devices
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
     // Hide default cursor
     document.body.style.cursor = 'none';
 
@@ -24,6 +29,30 @@ export const CustomCursor: React.FC = () => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       }
+
+      // Magnetic effect on nearby interactive elements
+      const magnetTargets = document.querySelectorAll<HTMLElement>('a, button, [data-magnetic]');
+      magnetTargets.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = e.clientX - centerX;
+        const dy = e.clientY - centerY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 50 && distance > 1) {
+          const strength = (1 - distance / 50) * 6;
+          const moveX = (dx / distance) * strength;
+          const moveY = (dy / distance) * strength;
+          el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          el.style.transition = 'transform 0.15s ease-out';
+          magnetizedRef.current.add(el);
+        } else if (magnetizedRef.current.has(el)) {
+          el.style.transition = 'transform 0.3s ease-out';
+          el.style.transform = '';
+          magnetizedRef.current.delete(el);
+        }
+      });
     };
 
     const onMouseDown = () => setIsClicking(true);
@@ -79,6 +108,12 @@ export const CustomCursor: React.FC = () => {
       window.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('mouseover', onMouseOver);
       cancelAnimationFrame(animationFrameId);
+      // Reset all magnetized elements
+      magnetizedRef.current.forEach((el) => {
+        el.style.transform = '';
+        el.style.transition = '';
+      });
+      magnetizedRef.current.clear();
     };
   }, [isVisible]);
 

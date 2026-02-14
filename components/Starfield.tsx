@@ -49,8 +49,18 @@ export default function Starfield() {
     window.addEventListener('resize', handleResize);
     animate();
 
+    // Parallax: shift canvas on scroll (desktop only)
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    const handleScroll = () => {
+      if (isDesktop) {
+        canvas.style.transform = `translateY(${window.scrollY * 0.1}px)`;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(animationId);
     };
   }, []);

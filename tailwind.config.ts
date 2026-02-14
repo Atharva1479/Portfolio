@@ -27,6 +27,9 @@ const config: Config = {
                 'slide-up': 'slideUp 0.5s ease-out forwards',
                 'spin-slow': 'spin 3s linear infinite',
                 'bounce-slow': 'bounce 3s infinite',
+                'blob-drift-1': 'blobDrift1 20s ease-in-out infinite',
+                'blob-drift-2': 'blobDrift2 25s ease-in-out infinite',
+                'blob-drift-3': 'blobDrift3 30s ease-in-out infinite',
             },
             keyframes: {
                 blink: {
@@ -44,6 +47,21 @@ const config: Config = {
                 slideDown: {
                     '0%': { opacity: '0', transform: 'translateY(-20px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                blobDrift1: {
+                    '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+                    '33%': { transform: 'translate(30px, -20px) scale(1.05)' },
+                    '66%': { transform: 'translate(-20px, 15px) scale(0.95)' },
+                },
+                blobDrift2: {
+                    '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+                    '33%': { transform: 'translate(-25px, 20px) scale(0.95)' },
+                    '66%': { transform: 'translate(20px, -25px) scale(1.05)' },
+                },
+                blobDrift3: {
+                    '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+                    '33%': { transform: 'translate(20px, 25px) scale(1.05)' },
+                    '66%': { transform: 'translate(-30px, -15px) scale(0.95)' },
                 },
             },
         },
