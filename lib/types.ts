@@ -1,5 +1,6 @@
 export interface Project {
   title: string;
+  slug: string;
   date: string;
   description: string[];
   tech: string[];
@@ -8,7 +9,17 @@ export interface Project {
     code?: string;
   };
   featured?: boolean;
-  image?: string; // Added image field
+  image?: string;
+  status?: 'live' | 'building' | 'completed';
+  details?: {
+    overview: string;
+    whyBuilt?: string[];
+    features?: string[];
+    techCategories?: { name: string; items: string[] }[];
+    challenges?: { title: string; description: string }[];
+    impact?: string[];
+    futurePlans?: string[];
+  };
 }
 
 export interface SkillCategory {

@@ -3,6 +3,42 @@ import { EXPERIENCE } from '../lib/constants';
 import { Globe, Briefcase } from 'lucide-react';
 import { RevealOnScroll } from './RevealOnScroll';
 
+// Tech logo mapping — devicon slugs
+const DEVICON_MAP: Record<string, string> = {
+  'React': 'react', 'React.js': 'react', 'Next.js': 'nextjs',
+  'Spring Boot': 'spring', 'MySQL': 'mysql', 'PostgreSQL': 'postgresql',
+  'Docker': 'docker', 'Tailwind CSS': 'tailwindcss', 'TypeScript': 'typescript',
+  'JavaScript': 'javascript', 'Python': 'python', 'HTML5': 'html5',
+  'CSS3': 'css3', 'Bootstrap': 'bootstrap', 'MongoDB': 'mongodb',
+  'Redis': 'redis', 'Node.js': 'nodejs', 'FastAPI': 'fastapi', 'SQLite': 'sqlite',
+  'GraphQL': 'graphql', 'AWS': 'amazonwebservices', 'Azure': 'azure',
+  'GCP': 'googlecloud', 'Kubernetes': 'kubernetes', 'Jenkins': 'jenkins',
+};
+
+// Direct URLs for techs not in devicon
+const DIRECT_ICON_MAP: Record<string, string> = {
+  'LangChain': 'https://cdn.simpleicons.org/langchain',
+  'Langchain': 'https://cdn.simpleicons.org/langchain',
+  'LangGraph': 'https://cdn.simpleicons.org/langchain',
+  'Pinecone': 'https://cdn.simpleicons.org/pinecone/FFFFFF',
+  'Supabase': 'https://cdn.simpleicons.org/supabase/FFFFFF',
+  'CrewAI': 'https://cdn.simpleicons.org/crewai',
+  'Pydantic AI': 'https://cdn.simpleicons.org/pydantic/FFFFFF',
+  'Razorpay': 'https://cdn.simpleicons.org/razorpay',
+  'Razorpay & UPI': 'https://cdn.simpleicons.org/razorpay',
+  'shadcn/ui': 'https://cdn.simpleicons.org/shadcnui',
+  'Gemini API': 'https://cdn.simpleicons.org/googlegemini',
+  'Django': 'https://cdn.simpleicons.org/django/FFFFFF',
+  'Bucket4j': 'https://cdn.simpleicons.org/spring/FFFFFF',
+};
+
+function getTechIconUrl(tech: string): string | null {
+  if (DIRECT_ICON_MAP[tech]) return DIRECT_ICON_MAP[tech];
+  const slug = DEVICON_MAP[tech];
+  if (!slug) return null;
+  return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${slug}/${slug}-original.svg`;
+}
+
 // Custom social icons to avoid deprecated lucide icons
 const LinkedInIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -34,101 +70,126 @@ const Experience: React.FC = () => {
           </span>
         </div>
 
-        <div className="space-y-8">
-          {EXPERIENCE.map((exp, index) => (
-            <RevealOnScroll key={index} delay={index * 100} variant="blur-in">
-              <div className="group bg-zinc-900/20 border border-zinc-800 rounded-xl p-6 md:p-8 hover:bg-zinc-900/40 hover:border-zinc-700 transition-all duration-300">
-                {/* Header: Logo, Company Info, and Date */}
-                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
-                  <div className="flex items-start gap-4">
-                    {/* Company Logo */}
-                    <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden shrink-0">
-                      {exp.logo ? (
-                        <img src={exp.logo} alt={exp.company} className="w-full h-full object-cover" />
-                      ) : (
-                        <Briefcase className="w-6 h-6 text-zinc-500" />
-                      )}
+        {/* Timeline container */}
+        <div className="relative">
+          {/* Vertical timeline line */}
+          <div className="absolute left-[19px] top-0 bottom-0 w-[2px] bg-zinc-800" />
+
+          <div className="space-y-10">
+            {EXPERIENCE.map((exp, index) => (
+              <RevealOnScroll key={index} delay={index * 100} variant="blur-in">
+                <div className="relative flex items-start">
+                  {/* Timeline dot */}
+                  <div className="absolute left-[19px] -translate-x-1/2 z-10 flex items-center justify-center">
+                    <div className={`w-10 h-10 rounded-full border-2 ${exp.current ? 'border-emerald-500/30' : 'border-zinc-700'} bg-zinc-950 flex items-center justify-center`}>
+                      <div className={`w-3 h-3 rounded-full ${exp.current ? 'bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.6)]' : 'bg-emerald-500'}`} />
                     </div>
+                  </div>
 
-                    {/* Company Info */}
-                    <div>
-                      <div className="flex flex-wrap items-center gap-3 mb-1">
-                        <h3 className="text-lg font-bold text-white">{exp.company}</h3>
+                  {/* Card */}
+                  <div className="w-full pl-14">
+                    <div className="group bg-zinc-900/20 border border-zinc-800 rounded-xl p-6 md:p-8 hover:bg-zinc-900/40 hover:border-zinc-700 transition-all duration-300">
+                      {/* Header: Logo, Company Info, and Date */}
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+                        <div className="flex items-start gap-4">
+                          {/* Company Logo */}
+                          <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden shrink-0">
+                            {exp.logo ? (
+                              <img src={exp.logo} alt={exp.company} className="w-full h-full object-cover" />
+                            ) : (
+                              <Briefcase className="w-6 h-6 text-zinc-500" />
+                            )}
+                          </div>
 
-                        {/* Social Links */}
-                        <div className="flex items-center gap-2">
-                          {exp.links?.website && (
-                            <a href={exp.links.website} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                              <Globe className="w-4 h-4" />
-                            </a>
-                          )}
-                          {exp.links?.twitter && (
-                            <a href={exp.links.twitter} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                              <TwitterIcon className="w-4 h-4" />
-                            </a>
-                          )}
-                          {exp.links?.linkedin && (
-                            <a href={exp.links.linkedin} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-[#0A66C2] transition-colors">
-                              <LinkedInIcon className="w-4 h-4" />
-                            </a>
-                          )}
-                          {exp.links?.github && (
-                            <a href={exp.links.github} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                              <GitHubIcon className="w-4 h-4" />
-                            </a>
-                          )}
+                          {/* Company Info */}
+                          <div>
+                            <div className="flex flex-wrap items-center gap-3 mb-1">
+                              <h3 className="text-lg font-bold text-white">{exp.company}</h3>
+
+                              {/* Social Links */}
+                              <div className="flex items-center gap-2">
+                                {exp.links?.website && (
+                                  <a href={exp.links.website} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                    <Globe className="w-4 h-4" />
+                                  </a>
+                                )}
+                                {exp.links?.twitter && (
+                                  <a href={exp.links.twitter} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                    <TwitterIcon className="w-4 h-4" />
+                                  </a>
+                                )}
+                                {exp.links?.linkedin && (
+                                  <a href={exp.links.linkedin} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-[#0A66C2] transition-colors">
+                                    <LinkedInIcon className="w-4 h-4" />
+                                  </a>
+                                )}
+                                {exp.links?.github && (
+                                  <a href={exp.links.github} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                    <GitHubIcon className="w-4 h-4" />
+                                  </a>
+                                )}
+                              </div>
+
+                              {/* Working Badge */}
+                              {exp.current && (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                  <span className="text-xs font-medium text-emerald-400">Working</span>
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-zinc-400 text-sm">{exp.role}</p>
+                          </div>
                         </div>
 
-                        {/* Working Badge */}
-                        {exp.current && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span className="text-xs font-medium text-emerald-400">Working</span>
-                          </span>
-                        )}
+                        {/* Duration and Location */}
+                        <div className="text-right md:text-right text-sm">
+                          <p className="text-zinc-300 font-medium">{exp.duration}</p>
+                          <p className="text-zinc-500">{exp.location}</p>
+                        </div>
                       </div>
-                      <p className="text-zinc-400 text-sm">{exp.role}</p>
-                    </div>
-                  </div>
 
-                  {/* Duration and Location */}
-                  <div className="text-right md:text-right text-sm">
-                    <p className="text-zinc-300 font-medium">{exp.duration}</p>
-                    <p className="text-zinc-500">{exp.location}</p>
+                      {/* Technologies & Tools */}
+                      {exp.tech && exp.tech.length > 0 && (
+                        <div className="mb-6">
+                          <h4 className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
+                            Technologies & Tools
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {exp.tech.map((tech, i) => {
+                              const iconUrl = getTechIconUrl(tech);
+                              return (
+                                <span
+                                  key={i}
+                                  className="cursor-default inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 transition-all duration-200 hover:bg-zinc-700 hover:text-white hover:border-zinc-500"
+                                >
+                                  {iconUrl && <img src={iconUrl} alt={tech} className="w-4 h-4" />}
+                                  {tech}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Description */}
+                      <ul className="space-y-2">
+                        {exp.description.map((point, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
+                            <span className="text-zinc-600 mt-1">&#8226;</span>
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
+              </RevealOnScroll>
+            ))}
+          </div>
 
-                {/* Technologies & Tools */}
-                {exp.tech && exp.tech.length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
-                      Technologies & Tools
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {exp.tech.map((tech, i) => (
-                        <span
-                          key={i}
-                          className="cursor-default px-2.5 py-1 text-[11px] font-mono rounded-md bg-zinc-900 border border-zinc-800 text-zinc-400 transition-all duration-200 hover:bg-zinc-800 hover:text-white hover:border-zinc-600"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Description */}
-                <ul className="space-y-2">
-                  {exp.description.map((point, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
-                      <span className="text-zinc-600 mt-1">&#8226;</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </RevealOnScroll>
-          ))}
+          {/* Fade out at bottom */}
+          <div className="absolute left-[19px] -translate-x-px bottom-0 w-[2px] h-12 bg-gradient-to-t from-zinc-950 to-transparent" />
         </div>
       </div>
     </section>

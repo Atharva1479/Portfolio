@@ -21,14 +21,14 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL('https://yashpandav.dev'),
+    metadataBase: new URL('https://atharva-jamdar.vercel.app/'),
     title: {
         default: 'Atharva Jamdar | AI Engineer & Full Stack Developer',
         template: '%s | Atharva Jamdar',
     },
     description: 'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications. Building intelligent solutions with LangChain, Spring Boot, and modern AI technologies.',
     keywords: ['AI Engineer', 'Full Stack Developer', 'Agentic AI', 'RAG Systems', 'LangChain', 'Next.js', 'React', 'TypeScript', 'Machine Learning', 'Web Development', 'Software Engineer', 'Portfolio'],
-    authors: [{ name: 'Atharva Jamdar', url: 'https://yashpandav.dev' }],
+    authors: [{ name: 'Atharva Jamdar', url: 'https://atharva-jamdar.vercel.app/' }],
     creator: 'Atharva Jamdar',
     publisher: 'Atharva Jamdar',
     formatDetection: {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Atharva Jamdar | AI Engineer & Full Stack Developer',
         description: 'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications.',
-        url: 'https://yashpandav.dev',
+        url: 'https://atharva-jamdar.vercel.app/',
         siteName: 'Atharva Jamdar Portfolio',
         images: [
             {
@@ -104,9 +104,9 @@ export default function RootLayout({
                             '@context': 'https://schema.org',
                             '@type': 'Person',
                             name: 'Atharva Jamdar',
-                            url: 'https://yashpandav.dev',
+                            url: 'https://atharva-jamdar.vercel.app/',
                             email: 'atharvajamdar1810@gmail.com',
-                            image: 'https://yashpandav.dev/og-image.png',
+                            image: 'https://atharva-jamdar.vercel.app/og-image.png',
                             sameAs: [
                                 'https://github.com/Atharva1479',
                                 'https://www.linkedin.com/in/atharva-jamdar/',
@@ -129,7 +129,7 @@ export default function RootLayout({
                             '@context': 'https://schema.org',
                             '@type': 'WebSite',
                             name: 'Atharva Jamdar Portfolio',
-                            url: 'https://yashpandav.dev',
+                            url: 'https://atharva-jamdar.vercel.app/',
                             description: 'Portfolio of Atharva Jamdar, AI Engineer & Full Stack Developer',
                             author: {
                                 '@type': 'Person',
@@ -139,7 +139,7 @@ export default function RootLayout({
                     }}
                 />
             </head>
-            <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} font-sans antialiased`}>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} font-sans antialiased bg-zinc-950 text-zinc-100`}>
                 {children}
             </body>
         </html>
