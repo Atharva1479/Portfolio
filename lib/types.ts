@@ -64,6 +64,12 @@ export interface GitaQuote {
   verse: number;
 }
 
+export interface Stat {
+  value: number;
+  suffix: string;
+  label: string;
+}
+
 export interface Experience {
   company: string;
   role: string;

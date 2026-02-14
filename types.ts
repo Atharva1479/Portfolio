@@ -40,6 +40,12 @@ export interface SocialLink {
   icon: string;
 }
 
+export interface Stat {
+  value: number;
+  suffix: string;
+  label: string;
+}
+
 export interface Testimonial {
   name: string;
   role: string;

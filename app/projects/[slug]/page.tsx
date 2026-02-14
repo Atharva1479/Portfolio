@@ -105,7 +105,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <img
               src={project.image}
               alt={project.title}
-              className="w-full h-64 md:h-80 object-cover"
+              className="w-full h-auto md:h-80 md:object-cover"
             />
           </div>
         )}
