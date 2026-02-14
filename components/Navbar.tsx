@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Terminal } from 'lucide-react';
+import { Menu, X, Terminal, Search } from 'lucide-react';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onOpenCommand?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onOpenCommand }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMac, setIsMac] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -11,6 +16,10 @@ const Navbar: React.FC = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsMac(/(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent));
   }, []);
 
   const navLinks = [
@@ -50,6 +59,17 @@ const Navbar: React.FC = () => {
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-emerald-500 transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
+
+          {/* Cmd+K badge */}
+          {onOpenCommand && (
+            <button
+              onClick={onOpenCommand}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900/50 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 transition-colors text-[11px] font-mono"
+            >
+              <Search className="w-3 h-3" />
+              {isMac ? '⌘K' : 'Ctrl+K'}
+            </button>
+          )}
         </div>
 
         {/* Mobile Toggle */}

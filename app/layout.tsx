@@ -78,11 +78,6 @@ export const metadata: Metadata = {
     verification: {
         google: 'your-google-verification-code', // TODO: Add actual verification code
     },
-    icons: {
-        icon: '/favicon.png',
-        shortcut: '/favicon.png',
-        apple: '/favicon.png',
-    },
 };
 
 export const viewport = {

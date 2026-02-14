@@ -1,7 +1,7 @@
 // This page is a client component
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -30,9 +30,22 @@ const Contact = dynamic(() => import('@/components/Contact').then(m => ({ defaul
 });
 const ChatWidget = dynamic(() => import('@/components/ChatWidget'), { ssr: false });
 const CustomCursor = dynamic(() => import('@/components/CustomCursor').then(mod => mod.CustomCursor), { ssr: false });
+const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false });
 
 export default function Home() {
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [isCommandOpen, setIsCommandOpen] = useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setIsCommandOpen(prev => !prev);
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     return (
         <div className="relative min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden">
@@ -43,7 +56,7 @@ export default function Home() {
 
             <Starfield />
             <div className="relative z-10 animate-[fadeIn_1s_ease-out_forwards] overflow-x-hidden">
-                <Navbar />
+                <Navbar onOpenCommand={() => setIsCommandOpen(true)} />
                 <main className="space-y-0">
                     <Hero onOpenChat={() => setIsChatOpen(true)} />
                     <RevealOnScroll variant="blur-in"><About /></RevealOnScroll>
@@ -56,6 +69,7 @@ export default function Home() {
                 <RevealOnScroll variant="scale-up"><Contact /></RevealOnScroll>
                 <ChatWidget isOpen={isChatOpen} onToggle={() => setIsChatOpen(!isChatOpen)} />
             </div>
+            <CommandPalette isOpen={isCommandOpen} onClose={() => setIsCommandOpen(false)} />
         </div>
     );
 }

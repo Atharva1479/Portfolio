@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { EXPERIENCE } from '../lib/constants';
 import { Globe, Briefcase } from 'lucide-react';
 import { RevealOnScroll } from './RevealOnScroll';
@@ -58,7 +60,30 @@ const GitHubIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const INITIAL_BULLETS = 2;
+
 const Experience: React.FC = () => {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const [lineVisible, setLineVisible] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    const el = timelineRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setLineVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleExpanded = (index: number) => {
+    setExpandedCards(prev => ({ ...prev, [index]: !prev[index] }));
+  };
+
   return (
     <section id="experience" className="py-16 md:py-20 relative z-10">
       <div className="max-w-6xl mx-auto px-6">
@@ -71,121 +96,144 @@ const Experience: React.FC = () => {
         </div>
 
         {/* Timeline container */}
-        <div className="relative">
-          {/* Vertical timeline line */}
-          <div className="absolute left-[19px] top-0 bottom-0 w-[2px] bg-zinc-800" />
+        <div className="relative" ref={timelineRef}>
+          {/* Vertical timeline line — draws in on scroll */}
+          <div
+            className="absolute left-[19px] top-0 bottom-0 w-[2px] bg-zinc-800 origin-top transition-transform duration-1000 ease-out"
+            style={{ transform: lineVisible ? 'scaleY(1)' : 'scaleY(0)' }}
+          />
 
           <div className="space-y-10">
-            {EXPERIENCE.map((exp, index) => (
-              <RevealOnScroll key={index} delay={index * 100} variant="blur-in">
-                <div className="relative flex items-start">
-                  {/* Timeline dot */}
-                  <div className="absolute left-[19px] -translate-x-1/2 z-10 flex items-center justify-center">
-                    <div className={`w-10 h-10 rounded-full border-2 ${exp.current ? 'border-emerald-500/30' : 'border-zinc-700'} bg-zinc-950 flex items-center justify-center`}>
-                      <div className={`w-3 h-3 rounded-full ${exp.current ? 'bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.6)]' : 'bg-emerald-500'}`} />
+            {EXPERIENCE.map((exp, index) => {
+              const isExpanded = expandedCards[index];
+              const hasMore = exp.description.length > INITIAL_BULLETS;
+              const visibleBullets = isExpanded ? exp.description : exp.description.slice(0, INITIAL_BULLETS);
+              const hiddenCount = exp.description.length - INITIAL_BULLETS;
+
+              return (
+                <RevealOnScroll key={index} delay={index * 100} variant="blur-in">
+                  <div className="relative flex items-start group/entry">
+                    {/* Timeline dot */}
+                    <div className="absolute left-[19px] -translate-x-1/2 z-10 flex items-center justify-center">
+                      <div className={`w-10 h-10 rounded-full border-2 ${exp.current ? 'border-emerald-500/30' : 'border-zinc-700'} bg-zinc-950 flex items-center justify-center transition-all duration-300 group-hover/entry:border-emerald-500/50 group-hover/entry:shadow-[0_0_15px_rgba(16,185,129,0.2)]`}>
+                        <div className={`w-3 h-3 rounded-full transition-transform duration-300 group-hover/entry:scale-125 ${exp.current ? 'bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.6)]' : 'bg-emerald-500'}`} />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Card */}
-                  <div className="w-full pl-14">
-                    <div className="group bg-zinc-900/20 border border-zinc-800 rounded-xl p-6 md:p-8 hover:bg-zinc-900/40 hover:border-zinc-700 transition-all duration-300">
-                      {/* Header: Logo, Company Info, and Date */}
-                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
-                        <div className="flex items-start gap-4">
-                          {/* Company Logo */}
-                          <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden shrink-0">
-                            {exp.logo ? (
-                              <img src={exp.logo} alt={exp.company} className="w-full h-full object-cover" />
-                            ) : (
-                              <Briefcase className="w-6 h-6 text-zinc-500" />
-                            )}
-                          </div>
+                    {/* Dot-to-card connector */}
+                    <div className="absolute left-[39px] top-[18px] w-[17px] h-[2px] bg-gradient-to-r from-transparent to-transparent transition-all duration-300 group-hover/entry:from-emerald-500/40 group-hover/entry:to-transparent" />
 
-                          {/* Company Info */}
-                          <div>
-                            <div className="flex flex-wrap items-center gap-3 mb-1">
-                              <h3 className="text-lg font-bold text-white">{exp.company}</h3>
-
-                              {/* Social Links */}
-                              <div className="flex items-center gap-2">
-                                {exp.links?.website && (
-                                  <a href={exp.links.website} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                                    <Globe className="w-4 h-4" />
-                                  </a>
-                                )}
-                                {exp.links?.twitter && (
-                                  <a href={exp.links.twitter} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                                    <TwitterIcon className="w-4 h-4" />
-                                  </a>
-                                )}
-                                {exp.links?.linkedin && (
-                                  <a href={exp.links.linkedin} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-[#0A66C2] transition-colors">
-                                    <LinkedInIcon className="w-4 h-4" />
-                                  </a>
-                                )}
-                                {exp.links?.github && (
-                                  <a href={exp.links.github} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
-                                    <GitHubIcon className="w-4 h-4" />
-                                  </a>
-                                )}
-                              </div>
-
-                              {/* Working Badge */}
-                              {exp.current && (
-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                  <span className="text-xs font-medium text-emerald-400">Working</span>
-                                </span>
+                    {/* Card */}
+                    <div className="w-full pl-14">
+                      <div className="group bg-zinc-900/20 border border-zinc-800 rounded-xl p-6 md:p-8 hover:bg-zinc-900/40 hover:border-zinc-700 transition-all duration-300">
+                        {/* Header: Logo, Company Info, and Date */}
+                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+                          <div className="flex items-start gap-4">
+                            {/* Company Logo */}
+                            <div className="w-12 h-12 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden shrink-0">
+                              {exp.logo ? (
+                                <img src={exp.logo} alt={exp.company} className="w-full h-full object-cover" />
+                              ) : (
+                                <Briefcase className="w-6 h-6 text-zinc-500" />
                               )}
                             </div>
-                            <p className="text-zinc-400 text-sm">{exp.role}</p>
+
+                            {/* Company Info */}
+                            <div>
+                              <div className="flex flex-wrap items-center gap-3 mb-1">
+                                <h3 className="text-lg font-bold text-white">{exp.company}</h3>
+
+                                {/* Social Links */}
+                                <div className="flex items-center gap-2">
+                                  {exp.links?.website && (
+                                    <a href={exp.links.website} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                      <Globe className="w-4 h-4" />
+                                    </a>
+                                  )}
+                                  {exp.links?.twitter && (
+                                    <a href={exp.links.twitter} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                      <TwitterIcon className="w-4 h-4" />
+                                    </a>
+                                  )}
+                                  {exp.links?.linkedin && (
+                                    <a href={exp.links.linkedin} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-[#0A66C2] transition-colors">
+                                      <LinkedInIcon className="w-4 h-4" />
+                                    </a>
+                                  )}
+                                  {exp.links?.github && (
+                                    <a href={exp.links.github} target="_blank" rel="noreferrer" className="text-zinc-500 hover:text-white transition-colors">
+                                      <GitHubIcon className="w-4 h-4" />
+                                    </a>
+                                  )}
+                                </div>
+
+                                {/* Working Badge */}
+                                {exp.current && (
+                                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span className="text-xs font-medium text-emerald-400">Working</span>
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-zinc-400 text-sm">{exp.role}</p>
+                            </div>
+                          </div>
+
+                          {/* Duration and Location */}
+                          <div className="text-right md:text-right text-sm">
+                            <p className="text-zinc-300 font-medium">{exp.duration}</p>
+                            <p className="text-zinc-500">{exp.location}</p>
                           </div>
                         </div>
 
-                        {/* Duration and Location */}
-                        <div className="text-right md:text-right text-sm">
-                          <p className="text-zinc-300 font-medium">{exp.duration}</p>
-                          <p className="text-zinc-500">{exp.location}</p>
-                        </div>
+                        {/* Technologies & Tools */}
+                        {exp.tech && exp.tech.length > 0 && (
+                          <div className="mb-6">
+                            <h4 className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
+                              Technologies & Tools
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {exp.tech.map((tech, i) => {
+                                const iconUrl = getTechIconUrl(tech);
+                                return (
+                                  <span
+                                    key={i}
+                                    className="cursor-default inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 transition-all duration-200 hover:bg-zinc-700 hover:text-white hover:border-zinc-500"
+                                  >
+                                    {iconUrl && <img src={iconUrl} alt={tech} className="w-4 h-4" />}
+                                    {tech}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Description */}
+                        <ul className="space-y-2">
+                          {visibleBullets.map((point, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
+                              <span className="text-zinc-600 mt-1">&#8226;</span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Expand/Collapse toggle */}
+                        {hasMore && (
+                          <button
+                            onClick={() => toggleExpanded(index)}
+                            className="mt-3 font-mono text-xs text-emerald-500 hover:text-emerald-400 transition-colors"
+                          >
+                            {isExpanded ? '− Show less' : `+ ${hiddenCount} more`}
+                          </button>
+                        )}
                       </div>
-
-                      {/* Technologies & Tools */}
-                      {exp.tech && exp.tech.length > 0 && (
-                        <div className="mb-6">
-                          <h4 className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
-                            Technologies & Tools
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {exp.tech.map((tech, i) => {
-                              const iconUrl = getTechIconUrl(tech);
-                              return (
-                                <span
-                                  key={i}
-                                  className="cursor-default inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 transition-all duration-200 hover:bg-zinc-700 hover:text-white hover:border-zinc-500"
-                                >
-                                  {iconUrl && <img src={iconUrl} alt={tech} className="w-4 h-4" />}
-                                  {tech}
-                                </span>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Description */}
-                      <ul className="space-y-2">
-                        {exp.description.map((point, i) => (
-                          <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
-                            <span className="text-zinc-600 mt-1">&#8226;</span>
-                            <span>{point}</span>
-                          </li>
-                        ))}
-                      </ul>
                     </div>
                   </div>
-                </div>
-              </RevealOnScroll>
-            ))}
+                </RevealOnScroll>
+              );
+            })}
           </div>
 
           {/* Fade out at bottom */}
