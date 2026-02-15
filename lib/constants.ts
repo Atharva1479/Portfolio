@@ -3,14 +3,14 @@ import { Project, SkillCategory, Achievement, SocialLink, Testimonial, Education
 export const PERSONAL_INFO = {
   name: "Atharva Jamdar",
   role: "Full Stack Developer",
-  roleSecondary: "Gen AI",
+  roleSecondary: "AI Engineer",
   location: "Pune, India",
   email: "atharvajamdar1810@gmail.com",
   resume: "https://drive.google.com/file/d/12Nx9Imb5k6CWipLgnGrB4E6oFJOP8XeQ/view?usp=drive_link",
   terminalIntro: {
     cmd: "> npm run dev",
     response: "Initializing Project... Setup complete. Specializing in scalable full-stack architecture and AI integration.",
-    tagline: "Building scalable applications and AI-powered solutions that turn ideas into reality.",
+    tagline: "Building scalable applications and AI-powered solutions that turn complex problems into production-ready products. ",
     latency_humor: "O(1) complexity preferred"
   },
   aboutJson: {
@@ -26,7 +26,7 @@ export const ABOUT = {
   bioParagraphs: [
     "I'm a *Full-Stack* *Developer* and *AI* *Engineer* passionate about creating scalable, intelligent applications that solve real-world problems.",
     "My expertise lies in combining modern web technologies with *Generative* *AI* and *Agentic* *AI* to build intelligent, reliable, and user-focused solutions.",
-    "I enjoy designing end-to-end systems — from concept to implementation — that integrate *LLMs*, *automation*, and *modern* *web* *architectures* to create meaningful impact."
+    "I enjoy designing end-to-end systems from concept to implementation that integrate *LLMs*, *automation*, and *modern* *web* *architectures* to create meaningful impact."
   ]
 };
 
@@ -123,6 +123,68 @@ export const PROJECTS: Project[] = [
         "Add barcode/QR scanning support for faster billing",
         "Integrate AI-based demand forecasting for inventory",
         "Build mobile companion app for branch managers"
+      ]
+    }
+  },{
+    title: "GitTalk AI",
+    slug: "gitTalk-ai",
+    date: "Oct 2025",
+    description: [
+      "Built a GenAI-powered developer tool to solve the challenge of understanding large and unfamiliar GitHub codebases by enabling conversational interaction with any repository.",
+      "Engineered Retrieval-Augmented Generation (RAG) pipelines using LangChain, vector search, and Gemini API to generate contextual code explanations, summaries, and architectural insights.",
+      "Developed a high-performance frontend and backend that automates repository analysis, reducing developer onboarding time by approximately 50% through conversational code exploration."
+    ],
+    tech: ["React", "FastAPI", "LangChain", "Gemini API"],
+    links: {
+      demo: "NA",
+      code: "NA"
+    },
+    featured: true,
+    status: "building",
+    image: "/talk-to-github.png",
+    details: {
+      overview: "GitTalk AI is a GenAI-powered developer tool that lets you have natural conversations with any GitHub repository. Instead of manually reading through thousands of files, you can ask questions about the codebase and get contextual explanations, architectural summaries, and code insights powered by RAG pipelines with LangChain and Gemini API.",
+      whyBuilt: [
+        "Onboarding onto large, unfamiliar codebases is one of the most time-consuming tasks for developers.",
+        "Reading documentation (when it exists) is often outdated or incomplete.",
+        "Wanted to build a practical GenAI tool that solves a real developer pain point.",
+        "Great opportunity to implement production-grade RAG pipelines with vector search."
+      ],
+      features: [
+        "Conversational interface to ask questions about any GitHub repository",
+        "RAG-powered code explanations with source references",
+        "Automated repository cloning, parsing, and embedding generation",
+        "Architectural overview and dependency analysis",
+        "Support for multiple programming languages",
+        "Context-aware follow-up questions"
+      ],
+      techCategories: [
+        { name: "Frontend", items: ["React", "Tailwind CSS"] },
+        { name: "Backend", items: ["FastAPI", "Python"] },
+        { name: "AI/ML", items: ["LangChain", "Gemini API", "RAG Pipelines"] },
+        { name: "Database", items: ["Vector DB", "Embeddings"] }
+      ],
+      challenges: [
+        {
+          title: "Challenge: Handling Large Repositories Efficiently",
+          description: "Large repos with thousands of files can overwhelm the embedding pipeline. Implemented intelligent file filtering, chunking strategies, and incremental indexing to handle repos of any size within reasonable time and cost constraints."
+        },
+        {
+          title: "Challenge: Maintaining Context Across Conversations",
+          description: "Users ask follow-up questions that reference previous answers. Built a conversation memory system with LangChain that maintains context while staying within token limits through intelligent summarization."
+        }
+      ],
+      impact: [
+        "Reduces developer onboarding time by approximately 50%",
+        "Enables instant codebase understanding without reading every file",
+        "Demonstrates practical application of RAG in developer tooling",
+        "Built a reusable RAG pipeline applicable to other knowledge bases"
+      ],
+      futurePlans: [
+        "Add support for private repositories with GitHub OAuth",
+        "Implement code generation and PR suggestions",
+        "Add multi-repo comparison and architecture diffing",
+        "Deploy as a public SaaS tool"
       ]
     }
   },
@@ -243,69 +305,6 @@ export const PROJECTS: Project[] = [
         "Migrate to a modern React frontend with better UX",
         "Implement deep learning-based recommendations for improved accuracy",
         "Add real-time A/B testing for recommendation strategies"
-      ]
-    }
-  },
-  {
-    title: "TalkToGitHub",
-    slug: "talk-to-github",
-    date: "Oct 2025",
-    description: [
-      "Built a GenAI-powered developer tool to solve the challenge of understanding large and unfamiliar GitHub codebases by enabling conversational interaction with any repository.",
-      "Engineered Retrieval-Augmented Generation (RAG) pipelines using LangChain, vector search, and Gemini API to generate contextual code explanations, summaries, and architectural insights.",
-      "Developed a high-performance frontend and backend that automates repository analysis, reducing developer onboarding time by approximately 50% through conversational code exploration."
-    ],
-    tech: ["React", "FastAPI", "LangChain", "Gemini API"],
-    links: {
-      demo: "NA",
-      code: "NA"
-    },
-    featured: true,
-    status: "building",
-    image: "/talk-to-github.png",
-    details: {
-      overview: "TalkToGitHub is a GenAI-powered developer tool that lets you have natural conversations with any GitHub repository. Instead of manually reading through thousands of files, you can ask questions about the codebase and get contextual explanations, architectural summaries, and code insights powered by RAG pipelines with LangChain and Gemini API.",
-      whyBuilt: [
-        "Onboarding onto large, unfamiliar codebases is one of the most time-consuming tasks for developers.",
-        "Reading documentation (when it exists) is often outdated or incomplete.",
-        "Wanted to build a practical GenAI tool that solves a real developer pain point.",
-        "Great opportunity to implement production-grade RAG pipelines with vector search."
-      ],
-      features: [
-        "Conversational interface to ask questions about any GitHub repository",
-        "RAG-powered code explanations with source references",
-        "Automated repository cloning, parsing, and embedding generation",
-        "Architectural overview and dependency analysis",
-        "Support for multiple programming languages",
-        "Context-aware follow-up questions"
-      ],
-      techCategories: [
-        { name: "Frontend", items: ["React", "Tailwind CSS"] },
-        { name: "Backend", items: ["FastAPI", "Python"] },
-        { name: "AI/ML", items: ["LangChain", "Gemini API", "RAG Pipelines"] },
-        { name: "Database", items: ["Vector DB", "Embeddings"] }
-      ],
-      challenges: [
-        {
-          title: "Challenge: Handling Large Repositories Efficiently",
-          description: "Large repos with thousands of files can overwhelm the embedding pipeline. Implemented intelligent file filtering, chunking strategies, and incremental indexing to handle repos of any size within reasonable time and cost constraints."
-        },
-        {
-          title: "Challenge: Maintaining Context Across Conversations",
-          description: "Users ask follow-up questions that reference previous answers. Built a conversation memory system with LangChain that maintains context while staying within token limits through intelligent summarization."
-        }
-      ],
-      impact: [
-        "Reduces developer onboarding time by approximately 50%",
-        "Enables instant codebase understanding without reading every file",
-        "Demonstrates practical application of RAG in developer tooling",
-        "Built a reusable RAG pipeline applicable to other knowledge bases"
-      ],
-      futurePlans: [
-        "Add support for private repositories with GitHub OAuth",
-        "Implement code generation and PR suggestions",
-        "Add multi-repo comparison and architecture diffing",
-        "Deploy as a public SaaS tool"
       ]
     }
   },
@@ -446,13 +445,13 @@ export const EXPERIENCE: Experience[] = [
     location: "Pune, India",
     type: "Full-time",
     current: true,
-    logo: "/iq-logo.png", // Add your company logo to public folder
+    logo: "/iq-logo.png", 
     links: {
       website: "https://www.iqinnovationhub.com/",
       linkedin: "https://linkedin.com/company/iqinnovationhub"
     },
     description: [
-      "Designed and developed Spring Boot backend services for a large-scale insurance aggregation platform for a German client, integrating with 5+ external insurance provider APIs for real-time premium calculation and comparison.",
+      "Designed and developed Spring Boot backend services for a large-scale insurance aggregation platform for a German client, integrating with 10+ external insurance provider APIs for real-time premium calculation and comparison.",
       "Implemented REST, gRPC, and GraphQL APIs supporting client-facing, inter-service, and aggregation communication patterns for faster and more flexible data access.",
       "Optimized backend architecture and request flow, reducing end-to-end API response time from 10,000 ms to 172 ms (98% latency reduction).",
       "Enforced rate limiting and fault-tolerance mechanisms, reducing downstream API failures by 70% during peak traffic.",
