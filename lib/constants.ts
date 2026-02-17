@@ -130,61 +130,69 @@ export const PROJECTS: Project[] = [
     slug: "gitTalk-ai",
     date: "Oct 2025",
     description: [
-      "Built a GenAI-powered developer tool to solve the challenge of understanding large and unfamiliar GitHub codebases by enabling conversational interaction with any repository.",
-      "Engineered Retrieval-Augmented Generation (RAG) pipelines using LangChain, vector search, and Gemini API to generate contextual code explanations, summaries, and architectural insights.",
-      "Developed a high-performance frontend and backend that automates repository analysis, reducing developer onboarding time by approximately 50% through conversational code exploration."
+      "Engineered a GenAI-powered tool using FastAPI and LangChain that allows users to chat with any GitHub repository and understand its codebase.",
+      "Constructed RAG pipelines combining vector search and LLMs to generate contextual code insights, summaries, and architectural explanations.",
+      "Reduced onboarding time for developers by 50% through automated repo analysis and conversational code exploration."
     ],
-    tech: ["React", "FastAPI", "LangChain", "Gemini API"],
+    tech: ["React", "TypeScript", "FastAPI", "LangChain", "Pinecone", "Gemini API", "SQLite"],
     links: {
-      demo: "NA",
-      code: "NA"
+      demo: "https://git-talk-ai.vercel.app/",
+      code: "https://github.com/Atharva1479/GitTalk-AI"
     },
     featured: true,
-    status: "building",
+    status: "live",
     image: "/talk-to-github.png",
     details: {
-      overview: "GitTalk AI is a GenAI-powered developer tool that lets you have natural conversations with any GitHub repository. Instead of manually reading through thousands of files, you can ask questions about the codebase and get contextual explanations, architectural summaries, and code insights powered by RAG pipelines with LangChain and Gemini API.",
+      overview: "GitTalk AI transforms how developers understand codebases. Paste any GitHub repo URL and instantly start chatting with its code — ask about architecture, find bugs, get security reviews, or understand how any part works. It uses a RAG (Retrieval-Augmented Generation) pipeline to ingest repositories, chunk and index the code, and provide accurate, context-aware answers grounded in the actual source code — not hallucinations.",
       whyBuilt: [
-        "Onboarding onto large, unfamiliar codebases is one of the most time-consuming tasks for developers.",
-        "Reading documentation (when it exists) is often outdated or incomplete.",
-        "Wanted to build a practical GenAI tool that solves a real developer pain point.",
-        "Great opportunity to implement production-grade RAG pipelines with vector search."
+        "Every developer has faced the pain of onboarding onto a new codebase — scrolling through hundreds of files, trying to piece together how things connect.",
+        "Documentation is often outdated or missing.",
+        "I wanted a tool where you could simply ask 'how does authentication work in this repo?' and get an answer that references the actual files, functions, and architecture — like having a senior engineer who's already read every line of code."
       ],
       features: [
-        "Conversational interface to ask questions about any GitHub repository",
-        "RAG-powered code explanations with source references",
-        "Automated repository cloning, parsing, and embedding generation",
-        "Architectural overview and dependency analysis",
-        "Support for multiple programming languages",
-        "Context-aware follow-up questions"
+        "Chat with any GitHub repo: public repos instantly, private repos via GitHub App OAuth",
+        "Streaming responses: tokens appear in real-time as the AI generates answers, not after a long wait",
+        "5 specialized analysis modes: Explain, Find Bugs, Refactor, Security Audit, and Document",
+        "Hybrid search (Vector + BM25): combines semantic understanding with exact keyword matching using Reciprocal Rank Fusion",
+        "Conversation-aware retrieval: follow-up questions like 'how does it work?' correctly reference prior context",
+        "Smart query classification: broad questions retrieve more chunks than specific ones for comprehensive answers",
+        "Mermaid diagram rendering: architecture and flow diagrams rendered inline with pan/zoom",
+        "GitHub App integration: OAuth + GitHub App installation flow for private repo access with granular repo selection"
       ],
       techCategories: [
-        { name: "Frontend", items: ["React", "Tailwind CSS"] },
-        { name: "Backend", items: ["FastAPI", "Python"] },
-        { name: "AI/ML", items: ["LangChain", "Gemini API", "RAG Pipelines"] },
-        { name: "Database", items: ["Vector DB", "Embeddings"] }
+        { name: "Frontend", items: ["React", "TypeScript", "Tailwind CSS", "Vite"] },
+        { name: "Backend", items: ["Python", "FastAPI", "WebSockets"] },
+        { name: "LLM", items: ["Google Gemini 2.5 Flash", "Gemini Embedding-001"] },
+        { name: "Vector DB", items: ["Pinecone (serverless)"] },
+        { name: "Search", items: ["FlashRank (ms-marco-MiniLM-L-12-v2)", "BM25 (rank-bm25)"] },
+        { name: "Deployment", items: ["Render (backend Docker)", "Vercel (frontend)", "SQLite"] }
       ],
       challenges: [
         {
-          title: "Challenge: Handling Large Repositories Efficiently",
-          description: "Large repos with thousands of files can overwhelm the embedding pipeline. Implemented intelligent file filtering, chunking strategies, and incremental indexing to handle repos of any size within reasonable time and cost constraints."
+          title: "Challenge: GitHub API rate limiting on shared hosting",
+          description: "Render's shared IPs get 403'd by GitHub's API almost immediately. My initial accessibility check treated any non-200 as 'repo not found,' breaking all repos. Solution: Implemented a three-state check (True/False/None) — None (rate-limited) skips the pre-check and tries ingesting directly, rather than failing."
         },
         {
-          title: "Challenge: Maintaining Context Across Conversations",
-          description: "Users ask follow-up questions that reference previous answers. Built a conversation memory system with LangChain that maintains context while staying within token limits through intelligent summarization."
+          title: "Challenge: Memory constraints (512MB free tier)",
+          description: "FlashRank's ONNX model (~150MB) + storing all document chunks per connection in RAM for BM25 search exceeded the 512MB limit. Solution: Lazy-load the reranker model, load BM25 chunks from disk cache per query instead of keeping them in memory, and cap concurrent connections at 8."
+        },
+        {
+          title: "Challenge: Broad queries returning narrow results",
+          description: "\"What is this repo about?\" only retrieved a few README chunks, giving shallow answers. Solution: Built a query classifier that detects broad/overview queries and retrieves 100+ chunks (vs 30 for specific queries), then caps by token budget to prevent context window overflow."
         }
       ],
       impact: [
-        "Reduces developer onboarding time by approximately 50%",
-        "Enables instant codebase understanding without reading every file",
-        "Demonstrates practical application of RAG in developer tooling",
-        "Built a reusable RAG pipeline applicable to other knowledge bases"
+        "Full-stack AI product built end-to-end — from RAG pipeline design to production deployment",
+        "Sub-5-second response for most queries on indexed repos with streaming output",
+        "Hybrid retrieval outperforms pure vector search — exact function names and error messages that semantic search misses are caught by BM25",
+        "Production-deployed on free-tier infrastructure (Render + Vercel) with memory-optimized architecture fitting within 512MB",
+        "Secure by design — GitHub App with granular repo permissions, rate limiting on all endpoints, SVG sanitization for rendered diagrams, input validation and XSS prevention"
       ],
       futurePlans: [
-        "Add support for private repositories with GitHub OAuth",
-        "Implement code generation and PR suggestions",
-        "Add multi-repo comparison and architecture diffing",
-        "Deploy as a public SaaS tool"
+        "Support for larger repositories — incremental ingestion and smarter chunking to handle monorepos beyond the current 750K token limit",
+        "Multi-repo conversations — chat across multiple related repos simultaneously (e.g., frontend + backend)",
+        "Code generation mode — generate PRs and patches directly from chat suggestions",
+        "Self-hosted option — Docker Compose setup for teams who want to run it on their own infrastructure with their own API keys"
       ]
     }
   },
