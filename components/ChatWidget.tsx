@@ -3,6 +3,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+
+// Allow only safe markdown elements — no scripts, iframes, or raw HTML
+const sanitizeSchema = {
+  ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames || []), 'code', 'pre'],
+  attributes: {
+    ...defaultSchema.attributes,
+    a: ['href', 'title'],
+    code: ['className'],
+  },
+  protocols: {
+    href: ['http', 'https', 'mailto'],
+  },
+};
 
 interface Message {
   role: 'user' | 'model';
@@ -164,6 +179,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
                       msg.text
                     ) : (
                       <ReactMarkdown
+                        rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}
                         components={{
                           p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
                           strong: ({ children }) => <span className="font-bold text-emerald-400">{children}</span>,
@@ -171,16 +187,25 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
                           ul: ({ children }) => <ul className="space-y-1 my-2 list-disc list-inside marker:text-emerald-500/70">{children}</ul>,
                           ol: ({ children }) => <ol className="space-y-1 my-2 list-decimal list-inside marker:text-emerald-500/70">{children}</ol>,
                           li: ({ children }) => <li className="pl-1">{children}</li>,
-                          a: ({ href, children }) => (
-                            <a
-                              href={href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-emerald-400 hover:text-emerald-300 hover:underline decoration-emerald-400/30 underline-offset-2 transition-all"
-                            >
-                              {children}
-                            </a>
-                          ),
+                          a: ({ href, children }) => {
+                            // Only allow safe URL protocols
+                            let isSafe = false;
+                            try {
+                              const url = new URL(href || '', window.location.href);
+                              isSafe = ['http:', 'https:', 'mailto:'].includes(url.protocol);
+                            } catch { /* invalid URL */ }
+                            if (!isSafe) return <span>{children}</span>;
+                            return (
+                              <a
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-emerald-400 hover:text-emerald-300 hover:underline decoration-emerald-400/30 underline-offset-2 transition-all"
+                              >
+                                {children}
+                              </a>
+                            );
+                          },
                           code: ({ children }) => <code className="bg-zinc-800/50 px-1.5 py-0.5 rounded text-emerald-300 font-mono text-xs border border-zinc-700/50">{children}</code>
                         }}
                       >

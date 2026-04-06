@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     },
     manifest: '/manifest.webmanifest',
     verification: {
-        google: 'your-google-verification-code', // TODO: Add actual verification code
+        google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || undefined,
     },
 };
 
@@ -92,47 +92,40 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <head>
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'Person',
+                        name: 'Atharva Jamdar',
+                        url: 'https://atharva-jamdar.vercel.app/',
+                        image: 'https://atharva-jamdar.vercel.app/og-image.png',
+                        sameAs: [
+                            'https://github.com/Atharva1479',
+                            'https://www.linkedin.com/in/atharva-jamdar/',
+                            'https://twitter.com/its_atharva18',
+                        ],
+                        jobTitle: 'Full Stack Developer & Gen AI Dev',
+                        worksFor: {
+                            '@type': 'Organization',
+                            name: 'IQ Innovation Hub LLP',
+                        },
+                        description:
+                            'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications.',
+                    })}
+                </script>
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'WebSite',
+                        name: 'Atharva Jamdar Portfolio',
+                        url: 'https://atharva-jamdar.vercel.app/',
+                        description: 'Portfolio of Atharva Jamdar, AI Engineer & Full Stack Developer',
+                        author: {
                             '@type': 'Person',
                             name: 'Atharva Jamdar',
-                            url: 'https://atharva-jamdar.vercel.app/',
-                            email: 'atharvajamdar1810@gmail.com',
-                            image: 'https://atharva-jamdar.vercel.app/og-image.png',
-                            sameAs: [
-                                'https://github.com/Atharva1479',
-                                'https://www.linkedin.com/in/atharva-jamdar/',
-                                'https://twitter.com/its_atharva18',
-                            ],
-                            jobTitle: 'Full Stack Developer & Gen AI Dev',
-                            worksFor: {
-                                '@type': 'Organization',
-                                name: 'Freelance',
-                            },
-                            description:
-                                'Full Stack Developer & AI Engineer specializing in Agentic AI, RAG Systems, and scalable web applications.',
-                        }),
-                    }}
-                />
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'WebSite',
-                            name: 'Atharva Jamdar Portfolio',
-                            url: 'https://atharva-jamdar.vercel.app/',
-                            description: 'Portfolio of Atharva Jamdar, AI Engineer & Full Stack Developer',
-                            author: {
-                                '@type': 'Person',
-                                name: 'Atharva Jamdar',
-                            },
-                        }),
-                    }}
-                />
+                        },
+                    })}
+                </script>
             </head>
             <body className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable} font-sans antialiased bg-zinc-950 text-zinc-100`}>
                 {children}

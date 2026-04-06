@@ -10,11 +10,11 @@ const DEVICON_MAP: Record<string, string> = {
   'React': 'react', 'React.js': 'react', 'Next.js': 'nextjs',
   'Spring Boot': 'spring', 'MySQL': 'mysql', 'PostgreSQL': 'postgresql',
   'Docker': 'docker', 'Tailwind CSS': 'tailwindcss', 'TypeScript': 'typescript',
-  'JavaScript': 'javascript', 'Python': 'python', 'HTML5': 'html5',
+  'Java': 'java', 'JavaScript': 'javascript', 'Python': 'python', 'HTML5': 'html5',
   'CSS3': 'css3', 'Bootstrap': 'bootstrap', 'MongoDB': 'mongodb',
   'Redis': 'redis', 'Node.js': 'nodejs', 'FastAPI': 'fastapi', 'SQLite': 'sqlite',
-  'GraphQL': 'graphql', 'AWS': 'amazonwebservices', 'Azure': 'azure',
-  'GCP': 'googlecloud', 'Kubernetes': 'kubernetes', 'Jenkins': 'jenkins',
+  'AWS': 'amazonwebservices', 'Azure': 'azure',
+  'GCP': 'googlecloud', 'Kubernetes': 'kubernetes', 'Jenkins': 'jenkins', 'gRPC': 'grpc',
 };
 
 // Direct URLs for techs not in devicon
@@ -31,6 +31,7 @@ const DIRECT_ICON_MAP: Record<string, string> = {
   'shadcn/ui': 'https://cdn.simpleicons.org/shadcnui',
   'Gemini API': 'https://cdn.simpleicons.org/googlegemini',
   'Django': 'https://cdn.simpleicons.org/django/FFFFFF',
+  'GraphQL': 'https://cdn.simpleicons.org/graphql',
   'Bucket4j': 'https://cdn.simpleicons.org/spring/FFFFFF',
 };
 
@@ -65,7 +66,7 @@ const INITIAL_BULLETS = 2;
 const Experience: React.FC = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
   const [lineVisible, setLineVisible] = useState(false);
-  const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const el = timelineRef.current;
@@ -209,24 +210,64 @@ const Experience: React.FC = () => {
                           </div>
                         )}
 
-                        {/* Description */}
-                        <ul className="space-y-2">
-                          {visibleBullets.map((point, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
-                              <span className="text-zinc-600 mt-1">&#8226;</span>
-                              <span>{point}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        {/* Description — tracks or flat list */}
+                        {exp.tracks && exp.tracks.length > 0 ? (
+                          <div className="space-y-5">
+                            {exp.tracks.map((track, tIdx) => {
+                              const trackKey = `${index}-${tIdx}`;
+                              const isTrackExpanded = expandedCards[trackKey];
+                              const trackHasMore = track.description.length > INITIAL_BULLETS;
+                              const trackVisible = isTrackExpanded ? track.description : track.description.slice(0, INITIAL_BULLETS);
+                              const trackHiddenCount = track.description.length - INITIAL_BULLETS;
 
-                        {/* Expand/Collapse toggle */}
-                        {hasMore && (
-                          <button
-                            onClick={() => toggleExpanded(index)}
-                            className="mt-3 font-mono text-xs text-emerald-500 hover:text-emerald-400 transition-colors"
-                          >
-                            {isExpanded ? '− Show less' : `+ ${hiddenCount} more`}
-                          </button>
+                              return (
+                                <div key={tIdx}>
+                                  <div className="flex items-center gap-2 mb-3">
+                                    {track.icon && <span className="text-sm">{track.icon}</span>}
+                                    <h4 className="font-mono text-xs text-emerald-400 uppercase tracking-wider">{track.label}</h4>
+                                    <div className="h-px flex-1 bg-zinc-800"></div>
+                                  </div>
+                                  <ul className="space-y-2">
+                                    {trackVisible.map((point, i) => (
+                                      <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
+                                        <span className="text-zinc-600 mt-1">&#8226;</span>
+                                        <span>{point}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  {trackHasMore && (
+                                    <button
+                                      onClick={() => setExpandedCards(prev => ({ ...prev, [trackKey]: !prev[trackKey] }))}
+                                      className="mt-2 font-mono text-xs text-emerald-500 hover:text-emerald-400 transition-colors"
+                                    >
+                                      {isTrackExpanded ? '− Show less' : `+ ${trackHiddenCount} more`}
+                                    </button>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <>
+                            <ul className="space-y-2">
+                              {visibleBullets.map((point, i) => (
+                                <li key={i} className="flex items-start gap-3 text-sm text-zinc-400 leading-relaxed">
+                                  <span className="text-zinc-600 mt-1">&#8226;</span>
+                                  <span>{point}</span>
+                                </li>
+                              ))}
+                            </ul>
+
+                            {/* Expand/Collapse toggle */}
+                            {hasMore && (
+                              <button
+                                onClick={() => toggleExpanded(index)}
+                                className="mt-3 font-mono text-xs text-emerald-500 hover:text-emerald-400 transition-colors"
+                              >
+                                {isExpanded ? '− Show less' : `+ ${hiddenCount} more`}
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>

@@ -1,11 +1,15 @@
 import { Project, SkillCategory, Achievement, SocialLink, Testimonial, Education, GitaQuote, Experience, Stat } from './types';
 
+// Obfuscate email from automated scrapers parsing the JS bundle
+const _e = ['atharvajamdar1810', 'gmail.com'];
+const EMAIL = `${_e[0]}@${_e[1]}`;
+
 export const PERSONAL_INFO = {
   name: "Atharva Jamdar",
   role: "Full Stack Developer",
   roleSecondary: "AI Engineer",
   location: "Pune, India",
-  email: "atharvajamdar1810@gmail.com",
+  email: EMAIL,
   resume: "https://drive.google.com/file/d/12Nx9Imb5k6CWipLgnGrB4E6oFJOP8XeQ/view?usp=drive_link",
   terminalIntro: {
     cmd: "> npm run dev",
@@ -34,30 +38,30 @@ export const SKILLS: SkillCategory[] = [
   {
     name: "Generative AI & Agents",
     skills: [
-      "LangChain", "LangGraph", "CrewAI", "Pydantic AI", "LLM APIs", "RAG Pipelines", "VectorDB",
-      "Autonomous Agents", "Tool Integration", "Memory Management"
+      "LangChain", "LangGraph", "CrewAI", "Pydantic AI", "LLM APIs", "RAG Pipelines",
+      "Prompt Engineering", "Embeddings", "Cohere Reranking", "Autonomous Agents", "Tool Integration", "Memory Management"
     ],
     icon: "Brain"
   },
   {
     name: "Frontend Interface",
-    skills: ["React.js", "JavaScript", "Tailwind CSS", "Redux Toolkit", "HTML5", "CSS3"],
+    skills: ["React.js", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "shadcn/ui", "Redux Toolkit", "HTML5", "CSS3"],
     icon: "Layout"
   },
   {
     name: "Backend Infrastructure",
-    skills: ["Spring Boot", "FastAPI", "REST / gRPC / GraphQL", "Redis", "OAuth2 / JWT", "Microservice"],
+    skills: ["Spring Boot", "FastAPI", "REST / gRPC / GraphQL", "Redis", "OAuth2 / JWT", "Microservices"],
     icon: "Server"
   },
   {
     name: "Data Persistence & State",
-    skills: ["MySQL", "PostgreSQL", "MongoDB", "Supabase", "Vector Databases", "Pinecone"],
+    skills: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Pinecone", "FAISS", "pgvector"],
     icon: "Database"
   },
   {
     name: "System Ops & Ecosystem",
     skills: [
-      "AWS (EC2, S3, Lambda)", "Docker", "Kubernetes", "Jenkins", "CI/CD", "Linux", "Java 8", "Python"
+      "AWS (EC2, S3, Lambda)", "Azure", "Docker", "Kubernetes", "Jenkins", "CI/CD", "Git", "Postman", "Jira", "Linux", "Java 8+", "Python"
     ],
     icon: "Cloud"
   }
@@ -128,13 +132,13 @@ export const PROJECTS: Project[] = [
   },{
     title: "GitTalk AI",
     slug: "gitTalk-ai",
-    date: "Oct 2025",
+    date: "Oct 2024",
     description: [
       "Engineered a GenAI-powered tool using FastAPI and LangChain that allows users to chat with any GitHub repository and understand its codebase.",
       "Constructed RAG pipelines combining vector search and LLMs to generate contextual code insights, summaries, and architectural explanations.",
       "Reduced onboarding time for developers by 50% through automated repo analysis and conversational code exploration."
     ],
-    tech: ["React", "TypeScript", "FastAPI", "LangChain", "Pinecone", "Gemini API", "SQLite"],
+    tech: ["React", "TypeScript", "FastAPI", "LangChain", "Gemini API", "SQLite"],
     links: {
       demo: "https://git-talk-ai.vercel.app/",
       code: "https://github.com/Atharva1479/GitTalk-AI"
@@ -267,7 +271,7 @@ export const PROJECTS: Project[] = [
       "Implemented machine learning–based personalization and a smart bundling system that analyzes user behavior to recommend complementary products and generate AI-driven fashion blog content tailored to different generations.",
       "Developed a responsive, intuitive frontend and a scalable backend to ensure secure data handling, smooth user interactions, and efficient end-to-end shopping workflows."
     ],
-    tech: ["Python", "Django", "SQLite", "HTML5", "CSS3", "JavaScript", "Bootstrap"],
+    tech: ["Python", "Django", "SQLite", "HTML5", "CSS3", "JavaScript", "Bootstrap", "Docker"],
     links: {
       demo: "N/A",
       code: "https://github.com/Atharva1479/AI-Ecommerce-Platform"
@@ -458,16 +462,33 @@ export const EXPERIENCE: Experience[] = [
       website: "https://www.iqinnovationhub.com/",
       linkedin: "https://linkedin.com/company/iqinnovationhub"
     },
-    description: [
-      "Designed and developed Spring Boot backend services for a large-scale insurance aggregation platform for a German client, integrating with 10+ external insurance provider APIs for real-time premium calculation and comparison.",
-      "Implemented REST, gRPC, and GraphQL APIs supporting client-facing, inter-service, and aggregation communication patterns for faster and more flexible data access.",
-      "Optimized backend architecture and request flow, reducing end-to-end API response time from 10,000 ms to 172 ms (98% latency reduction).",
-      "Enforced rate limiting and fault-tolerance mechanisms, reducing downstream API failures by 70% during peak traffic.",
-      "Integrated PostgreSQL, email notification services, and Azure cloud storage to reliably process thousands of policy-related transactions.",
-      "Built reusable internal libraries reused across 3+ services and implemented Spring Profiles for deployments across Azure, AWS, and GCP.",
-      "Contributed to a GenAI backend service using FastAPI, implementing scope-based authentication to secure 5+ API scopes consumed by internal services."
+    description: [],
+    tracks: [
+      {
+        label: "Engineering Track",
+        icon: "⚙️",
+        description: [
+          "Built Spring Boot microservices for a large-scale insurance aggregation platform, integrating 10+ external provider APIs for real-time premium calculation and policy comparison.",
+          "Architected REST, gRPC, and GraphQL APIs across 3 communication patterns for client-facing, inter-service, and data aggregation use cases.",
+          "Reduced API response time from 10,000 ms to 172 ms (98% improvement) through request flow restructuring and design-level optimizations across the service layer.",
+          "Configured rate limiting, Redis caching, and fault-tolerance mechanisms, cutting downstream failures by 70% and improving throughput 3x under peak load.",
+          "Managed PostgreSQL, Azure Blob Storage, and email services supporting 5,000+ daily transactions with 99.9% uptime.",
+          "Packaged reusable internal libraries adopted across 3+ services and used Spring Profiles to manage environment-specific configuration across Azure, AWS, and GCP deployments."
+        ]
+      },
+      {
+        label: "AI Track",
+        icon: "🤖",
+        description: [
+          "Built an agentic meeting intelligence system with 2 pipelines — pre-recorded ingestion and a live Zoom/Teams bot — generating summaries, decisions, task assignments, and risk analysis with 92%+ accuracy across 100+ sessions.",
+          "Developed a LangGraph-powered Excel chatbot using Pinecone, hybrid search (BM25 + vector), and Cohere reranking, cutting incorrect answers by 60% over single-vector baseline.",
+          "Engineered a LangChain document extraction pipeline achieving 99% accuracy on non-standard and complex PDF formats.",
+          "Implemented guardrails, input validation, and hallucination reduction across all GenAI services, cutting invalid outputs by 45% and token spend by 30%.",
+          "Containerized production AI services using Docker and integrated CI/CD pipelines, reducing deployment time by 40% and ensuring reproducible environments."
+        ]
+      }
     ],
-    tech: ["Spring Boot", "FastAPI", "Python", "PostgreSQL", "Redis", "Langchain", "LangGraph", "CrewAI", "Azure"]
+    tech: ["Spring Boot", "FastAPI", "Java", "Python", "PostgreSQL", "Redis", "LangChain", "LangGraph", "CrewAI", "Azure", "gRPC", "GraphQL", "Docker"]
   }
   /*{
     company: "Upsurge Labs",
@@ -497,7 +518,7 @@ export const SOCIALS: SocialLink[] = [
   { name: "GitHub", url: "https://github.com/Atharva1479", icon: "Github" },
   { name: "LinkedIn", url: "https://www.linkedin.com/in/atharva-jamdar/", icon: "Linkedin" },
   { name: "Twitter", url: "https://x.com/its_atharva18", icon: "Twitter" },
-  { name: "Email", url: "mailto:atharvajamdar1810@gmail.com", icon: "Mail" },
+  { name: "Email", url: `mailto:${EMAIL}`, icon: "Mail" },
 ];
 
 // Bhagavad Gita Quotes - Add more quotes here, one will be shown daily

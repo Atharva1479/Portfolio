@@ -70,6 +70,12 @@ export interface Stat {
   label: string;
 }
 
+export interface ExperienceTrack {
+  label: string;
+  icon?: string;
+  description: string[];
+}
+
 export interface Experience {
   company: string;
   role: string;
@@ -77,6 +83,7 @@ export interface Experience {
   location: string;
   type: 'Full-time' | 'Part-time' | 'Internship' | 'Freelance' | 'Contract';
   description: string[];
+  tracks?: ExperienceTrack[];
   tech?: string[];
   logo?: string;
   current?: boolean;

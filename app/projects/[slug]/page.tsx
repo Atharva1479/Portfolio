@@ -1,7 +1,7 @@
 import { PROJECTS } from '@/lib/constants';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ExternalLink, ArrowRight, Home } from 'lucide-react';
 import Starfield from '@/components/Starfield';
 
 // Tech logo mappings
@@ -82,7 +82,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const status = getStatusConfig(project.status);
   const hasDemo = project.links?.demo && project.links.demo !== 'N/A' && project.links.demo !== 'NA';
   const hasCode = project.links?.code && project.links.code !== 'N/A' && project.links.code !== 'NA';
-  const nextProject = PROJECTS[(projectIndex + 1) % PROJECTS.length];
+  const isFirst = projectIndex === 0;
+  const isLast = projectIndex === PROJECTS.length - 1;
+  const prevProject = isFirst ? null : PROJECTS[projectIndex - 1];
+  const nextProject = isLast ? null : PROJECTS[projectIndex + 1];
   const details = project.details;
 
   return (
@@ -281,21 +284,61 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         {/* Bottom separator */}
         <div className="h-px bg-zinc-800 mb-10" />
 
-        {/* Next Project navigation */}
-        <Link
-          href={`/projects/${nextProject.slug}`}
-          className="group block bg-zinc-900/30 border border-zinc-800 rounded-xl p-6 hover:bg-zinc-900/50 hover:border-zinc-700 transition-all"
-        >
-          <div className="flex items-center justify-end gap-3">
-            <div className="text-right">
-              <p className="text-xs text-zinc-500 mb-1">Next Project</p>
-              <p className="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors">
-                {nextProject.title}
-              </p>
-            </div>
-            <ArrowRight className="w-5 h-5 text-zinc-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
-          </div>
-        </Link>
+        {/* Project navigation */}
+        <div className="flex items-stretch gap-4">
+          {/* Previous Project */}
+          {prevProject ? (
+            <Link
+              href={`/projects/${prevProject.slug}`}
+              className="group flex-1 bg-zinc-900/30 border border-zinc-800 rounded-xl p-6 hover:bg-zinc-900/50 hover:border-zinc-700 transition-all"
+            >
+              <div className="flex items-center gap-3">
+                <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-emerald-400 group-hover:-translate-x-1 transition-all shrink-0" />
+                <div>
+                  <p className="text-xs text-zinc-500 mb-1">Previous Project</p>
+                  <p className="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors">
+                    {prevProject.title}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div className="flex-1" />
+          )}
+
+          {/* Next Project or Back to Home */}
+          {nextProject ? (
+            <Link
+              href={`/projects/${nextProject.slug}`}
+              className="group flex-1 bg-zinc-900/30 border border-zinc-800 rounded-xl p-6 hover:bg-zinc-900/50 hover:border-zinc-700 transition-all"
+            >
+              <div className="flex items-center justify-end gap-3">
+                <div className="text-right">
+                  <p className="text-xs text-zinc-500 mb-1">Next Project</p>
+                  <p className="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors">
+                    {nextProject.title}
+                  </p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-zinc-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all shrink-0" />
+              </div>
+            </Link>
+          ) : (
+            <Link
+              href="/"
+              className="group flex-1 bg-zinc-900/30 border border-zinc-800 rounded-xl p-6 hover:bg-zinc-900/50 hover:border-emerald-500/30 transition-all"
+            >
+              <div className="flex items-center justify-end gap-3">
+                <div className="text-right">
+                  <p className="text-xs text-zinc-500 mb-1">You've seen them all</p>
+                  <p className="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors">
+                    Back to Home
+                  </p>
+                </div>
+                <Home className="w-5 h-5 text-zinc-500 group-hover:text-emerald-400 transition-all shrink-0" />
+              </div>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
