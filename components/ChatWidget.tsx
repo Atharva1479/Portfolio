@@ -29,12 +29,25 @@ interface ChatWidgetProps {
   onToggle: () => void;
 }
 
+const INITIAL_SUGGESTIONS = [
+  "What's Atharva's work experience?",
+  "What AI systems has he built?",
+  "Tell me about his projects",
+];
+
+const FOLLOW_UP_SUGGESTIONS: string[][] = [
+  ["What AI work has he done?", "What's his tech stack?", "How can I contact him?"],
+  ["Tell me about his engineering work", "What projects has he built?", "What's his education?"],
+  ["Any live demos?", "What's his strongest skill?", "What about his backend experience?"],
+];
+
 const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: "Hello! I'm Atharva's AI Assistant. Ask me anything about his projects, skills, or experience." }
+    { role: 'model', text: "Hey! I'm Atharva's AI assistant. I know everything about his work, projects, and skills. What would you like to know?" }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>(INITIAL_SUGGESTIONS);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -60,16 +73,16 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
     }
   }, [isLoading, isOpen]);
 
-  const handleSend = async () => {
-    if (!inputValue.trim()) return;
+  const sendMessage = async (msg: string) => {
+    if (!msg.trim()) return;
 
-    const userMsg = inputValue.trim();
+    const userMsg = msg.trim();
     setInputValue('');
+    setSuggestions([]);
     setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setIsLoading(true);
 
     try {
-      // Call secure backend API instead of Google directly
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -87,15 +100,24 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
         text: data.response || "I couldn't generate a response."
       }]);
 
+      // Show follow-up suggestions after AI responds
+      const randomIdx = Math.floor(Math.random() * FOLLOW_UP_SUGGESTIONS.length);
+      setSuggestions(FOLLOW_UP_SUGGESTIONS[randomIdx]);
+
     } catch (error: any) {
       console.error('Chat Error:', error);
       setMessages(prev => [...prev, {
         role: 'model',
         text: error.message || 'Error: Unable to connect to the AI service. Please try again later.'
       }]);
+      setSuggestions(INITIAL_SUGGESTIONS);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSend = async () => {
+    await sendMessage(inputValue);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -226,6 +248,21 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
                   </div>
                 </div>
               )}
+              {/* Suggestion Chips */}
+              {suggestions.length > 0 && !isLoading && (
+                <div className="flex flex-wrap gap-2 animate-fade-in">
+                  {suggestions.map((suggestion, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => sendMessage(suggestion)}
+                      className="text-xs px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-500/40 transition-all"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
