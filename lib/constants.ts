@@ -129,7 +129,82 @@ export const PROJECTS: Project[] = [
         "Build mobile companion app for branch managers"
       ]
     }
-  },{
+  },
+  {
+    title: "GitHired",
+    slug: "githired",
+    date: "Jun 2026",
+    description: [
+      "Built a full-stack job-search platform for developers that consolidates every step of the hunt — finding fresh jobs, tracking applications, scoring resumes with ML, practicing DSA, and running AI-powered mock interviews — into one cohesive workflow.",
+      "Integrated an ML-powered ATS Resume Scorer across 8 dimensions using Word2Vec and MiniLM sentence embeddings, and an AI Voice Agent (Pilot) powered by Gemini + ElevenLabs TTS + Groq Whisper STT that reads your pipeline and surfaces the highest-leverage actions for the day.",
+      "Designed a gamification layer with XP, levels, daily quests, streak freeze tokens, and achievements to keep job seekers consistent and motivated throughout a long, often demoralising search."
+    ],
+    tech: ["Next.js", "FastAPI", "PostgreSQL", "Docker"],
+    links: {
+      demo: "N/A",
+      code: "N/A"
+    },
+    featured: true,
+    status: "building",
+    image: "/githired.png",
+    details: {
+      overview: "GitHired is a complete job-search platform built for developers. It brings every part of the job-hunt workflow into one place — discovering fresh postings before the competition piles up, managing a Kanban application pipeline, tracking warm referrals, scoring resumes against JDs with an ML engine, running full AI voice mock interviews, building AI-generated study plans, logging DSA practice, and maintaining streaks with a gamification system. An AI voice agent called Pilot reads your pipeline and proactively surfaces the 3–5 highest-leverage actions for today.",
+      whyBuilt: [
+        "Job hunting for developers is fragmented across spreadsheets, browser tabs, and reminder apps with no single tool that handles discovery, tracking, prep, and follow-ups together.",
+        "Most resume scorers are keyword-match only — wanted to build one with real semantic understanding using sentence embeddings and ontology coverage.",
+        "Mock interviews exist but require scheduling; wanted an on-demand, fully AI-driven voice interview loop that generates role-specific questions and scores every answer.",
+        "Consistency is the hardest part of a long job search — gamification (XP, streaks, daily quests) was a deliberate design choice to solve the motivation problem."
+      ],
+      features: [
+        "Fresh Job Finder — aggregates LinkedIn, Indeed, Naukri, Glassdoor via JSearch + Adzuna with freshness scoring (< 6h / 6–24h / 24–72h / 72h+) and resume match % lazy-loaded per card",
+        "One-click Apply & Track — opens job in new tab, auto-creates an application entry with the JD saved, duplicate applies blocked (HTTP 409)",
+        "Application Pipeline — Kanban board: Applied → Screening → Interview → Offer / Rejected / Ghosted with time-aware nudges",
+        "Referral Tracker — 4-stage pipeline with one-click Gemini-drafted LinkedIn referral message",
+        "ATS Resume Scorer — ML engine scoring across 8 dimensions: keyword placement, semantic match (Word2Vec + MiniLM), ontology coverage, experience fit, education, section completeness",
+        "AI Mock Interview — full voice loop: Ollama generates questions, ElevenLabs reads them aloud, Groq Whisper transcribes answers, Gemini scores each response with a full performance report",
+        "AI Voice Agent (Pilot) — text or voice; reads your pipeline, surfaces daily priorities, drafts follow-ups and referral messages hands-free",
+        "AI Study Plan — generates a structured revision tree for a target role; track progress per topic",
+        "DSA Practice — log attempts, paste solutions, get instant AI feedback on complexity and optimizations",
+        "Gamification — XP & levels, daily quests, streak freeze tokens, bronze-to-platinum achievements"
+      ],
+      techCategories: [
+        { name: "Frontend", items: ["Next.js 14 App Router", "TypeScript", "Tailwind CSS", "TanStack Query v5"] },
+        { name: "Backend", items: ["Python 3.12", "FastAPI", "asyncpg", "Alembic", "APScheduler"] },
+        { name: "Database", items: ["PostgreSQL 16"] },
+        { name: "AI — LLM", items: ["Google Gemini 2.5 Flash", "Ollama / llama3"] },
+        { name: "AI — Voice", items: ["ElevenLabs TTS", "Groq Whisper STT"] },
+        { name: "AI — ML (ATS)", items: ["scikit-learn", "Word2Vec", "MiniLM sentence embeddings"] },
+        { name: "Job APIs", items: ["JSearch (RapidAPI)", "Adzuna"] },
+        { name: "Auth & Email", items: ["Google OAuth 2.0", "Resend"] }
+      ],
+      challenges: [
+        {
+          title: "Challenge: Keeping job freshness accurate across multiple APIs",
+          description: "JSearch and Adzuna return job postings at different latencies and with inconsistent timestamp formats. Built a normalisation layer that converts all timestamps to a unified freshness score and tracks velocity (rate of new applicants since first cached) independently of the raw posting time."
+        },
+        {
+          title: "Challenge: ML ATS scorer cold-start with no user resume",
+          description: "Lazy-loading ATS scores per job card requires a resume to already be on file. Implemented a progressive disclosure pattern — cards show a 'Scan' CTA instead of a score, and the first scan also stores the resume for all future lazy-loads in that session."
+        },
+        {
+          title: "Challenge: Voice interview loop latency",
+          description: "ElevenLabs TTS + Groq Whisper STT + Ollama question generation introduced 4–6 s round-trip latency per exchange. Solved by streaming TTS audio in chunks while the next question is pre-generated in the background, reducing perceived wait time to under 1.5 s."
+        }
+      ],
+      impact: [
+        "End-to-end full-stack AI product covering job discovery, application tracking, resume scoring, mock interviews, study planning, and gamification in one platform",
+        "ML-powered ATS scorer with semantic understanding via MiniLM sentence embeddings — goes beyond simple keyword matching",
+        "Full AI voice interview loop built on open-source (Ollama) and API-based (ElevenLabs, Groq) components with per-answer scoring and performance reports",
+        "Gamification layer designed to sustain motivation across a months-long job search"
+      ],
+      futurePlans: [
+        "Add company research panel — auto-pull Glassdoor culture data and recent news for an interviewed company",
+        "Browser extension to auto-populate the tracker when applying directly on job boards",
+        "Team / cohort mode — friends studying for the same role can share study plans and compete on XP leaderboards"
+      ]
+    }
+  },
+  {
     title: "GitTalk AI",
     slug: "gitTalk-ai",
     date: "Oct 2024",
@@ -385,7 +460,7 @@ export const PROJECTS: Project[] = [
 ];
 
 export const STATS: Stat[] = [
-  { value: 5, suffix: '+', label: 'Projects Built' },
+  { value: 6, suffix: '+', label: 'Projects Built' },
   { value: 40, suffix: '+', label: 'Open Source Contributions' },
   { value: 98, suffix: '%', label: 'Latency Reduction' },
   { value: 50, suffix: '%', label: 'Onboarding Time Saved' },
